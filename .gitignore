@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Config
+config.json
+config-tests.json
+
+# Poetry
+*.egg-info/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*$py.class
+
+# Tests
+.pytest_cache/
