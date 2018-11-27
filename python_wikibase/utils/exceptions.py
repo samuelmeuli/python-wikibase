@@ -1,6 +1,6 @@
-class NotFoundError(Exception):
+class EditError(Exception):
     pass
 
 
-class UpdateError(Exception):
+class NotFoundError(Exception):
     pass

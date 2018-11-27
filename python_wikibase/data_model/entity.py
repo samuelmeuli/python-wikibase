@@ -1,6 +1,6 @@
 from abc import ABC
 
-from ..utils.exceptions import NotFoundError, UpdateError
+from ..utils.exceptions import EditError, NotFoundError
 
 
 class Entity(ABC):
@@ -72,7 +72,10 @@ class Entity(ABC):
             title = "Item:" + self.entity_id
         else:
             title = "Property:" + self.entity_id
-        self.wb.entity.remove(title)
+        r = self.wb.entity.remove(title)
+        if ("delete" not in r or "error" in r):
+            raise EditError("Could not delete entity: " + r)
+
     def set_label(self, label):
         """Update the entity's label (title)
 
@@ -85,7 +88,7 @@ class Entity(ABC):
             or "error" in r
             or r["entity"]["labels"][self.language]["value"] != label
         ):
-            raise UpdateError("Could not update label: " + r)
+            raise EditError("Could not update label: " + r)
         self.label = r["entity"]["labels"][self.language]["value"]
 
 
