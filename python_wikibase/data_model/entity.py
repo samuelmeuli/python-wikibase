@@ -31,6 +31,7 @@ class Entity(ABC):
         r = self.wb.entity.add(self.entity_type, content)
         self.entity_id = r["entity"]["id"]
         self.label = label
+        self.description = ""
         # TODO save (empty) attributes
         return self
 
@@ -51,6 +52,10 @@ class Entity(ABC):
         entity = r["entities"][entity_id]
         self.entity_id = entity["id"]
         self.label = entity["labels"][self.language]["value"]
+        try:
+            self.description = entity["descriptions"][self.language]["value"]
+        except KeyError:
+            self.description = ""
         # TODO save attributes
         return self
 
@@ -73,7 +78,7 @@ class Entity(ABC):
         else:
             title = "Property:" + self.entity_id
         r = self.wb.entity.remove(title)
-        if ("delete" not in r or "error" in r):
+        if "delete" not in r or "error" in r:
             raise EditError("Could not delete entity: " + r)
 
     def set_label(self, label):
@@ -91,6 +96,20 @@ class Entity(ABC):
             raise EditError("Could not update label: " + r)
         self.label = r["entity"]["labels"][self.language]["value"]
 
+    def set_description(self, description):
+        """Update the entity's description
+
+        :param description: New description
+        :type description: str
+        """
+        r = self.wb.description.set(self.entity_id, description, self.language)
+        if (
+            "success" not in r
+            or "error" in r
+            or r["entity"]["descriptions"][self.language]["value"] != description
+        ):
+            raise EditError("Could not update description: " + r)
+        self.description = r["entity"]["descriptions"][self.language]["value"]
 
 
 class Item(Entity):
