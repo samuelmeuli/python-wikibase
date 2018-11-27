@@ -6,9 +6,12 @@ authors = ["Samuel Meuli <me@samuelmeuli.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
+wikibase-api = {path = "../wikibase-api"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
+flake8 = "^3.6"
+black = {version = "^18.3-alpha.0",allows-prereleases = true}
 
 [build-system]
 requires = ["poetry>=0.12"]
