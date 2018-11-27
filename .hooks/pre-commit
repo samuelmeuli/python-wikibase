@@ -11,3 +11,6 @@ make format --check || (
 
 # Flake8
 make lint
+
+# Tests
+make test
