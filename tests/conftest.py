@@ -7,7 +7,9 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(os.path.dirname(current_dir), "config-tests.json")
 
 SAMPLE_ITEM_LABEL = "Test item"
+SAMPLE_ITEM_LABEL_2 = "Test item 2"
 SAMPLE_PROPERTY_LABEL = "Test property"
+SAMPLE_PROPERTY_LABEL_2 = "Test property 2"
 
 
 @pytest.fixture(scope="session")

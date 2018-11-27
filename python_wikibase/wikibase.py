@@ -14,7 +14,7 @@ class Wikibase:
         summary=None,
         config_path=None,
         # Other params
-        language="en"
+        language="en",
     ):
         # Create instance of wikibase-api's Wikibase class (includes authentication)
         wb = WikibaseApi(

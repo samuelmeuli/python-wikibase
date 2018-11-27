@@ -1,6 +1,7 @@
 from python_wikibase.data_model.entity import Item, Property
 
-from .conftest import SAMPLE_ITEM_LABEL, SAMPLE_PROPERTY_LABEL
+from .conftest import (SAMPLE_ITEM_LABEL, SAMPLE_ITEM_LABEL_2,
+                       SAMPLE_PROPERTY_LABEL)
 
 
 def test_item(wb_with_auth, item_id):
@@ -13,6 +14,9 @@ def test_item(wb_with_auth, item_id):
     results = wb_with_auth.item.search(SAMPLE_ITEM_LABEL)
     assert results[0]["label"] == SAMPLE_ITEM_LABEL
 
+    # Update item label
+    item.set_label(SAMPLE_ITEM_LABEL_2)
+    assert item.label == SAMPLE_ITEM_LABEL_2
 
 def test_property(wb_with_auth, property_id):
     # Get property
