@@ -9,13 +9,8 @@ class Label:
         for lang, lang_value in labels.items():
             self.labels[lang] = lang_value["value"]
 
-    def __str__(self):
-        """Return the label in the entity's default language
-
-        :return: Label
-        :rtype: str
-        """
-        return self.get(self.entity.language)
+    def __repr__(self):
+        return repr(self.labels)
 
     def get(self, language=None):
         """Get the entity's label in the specified language (or use the entity's default)

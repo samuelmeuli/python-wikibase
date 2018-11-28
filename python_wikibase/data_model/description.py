@@ -9,13 +9,8 @@ class Description:
         for lang, lang_value in descriptions.items():
             self.descriptions[lang] = lang_value["value"]
 
-    def __str__(self):
-        """Return the description in the entity's default language
-
-        :return: Description
-        :rtype: str
-        """
-        return self.get(self.entity.language)
+    def __repr__(self):
+        return repr(self.descriptions)
 
     def get(self, language=None):
         """Get the entity's description in the specified language (or use the entity's default)

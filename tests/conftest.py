@@ -48,7 +48,7 @@ def item_id(wb_with_auth):
     # Create item
     item = wb_with_auth.item.create(SAMPLE_ITEM_LABEL)
     assert item.entity_id.startswith("Q")
-    assert str(item.label) == SAMPLE_ITEM_LABEL
+    assert item.label.get() == SAMPLE_ITEM_LABEL
 
     # Pass entity_id to test function and wait for it to finish
     yield item.entity_id
@@ -69,7 +69,7 @@ def property_id(wb_with_auth):
     # Create property
     prop = wb_with_auth.property.create(SAMPLE_PROPERTY_LABEL, "string")
     assert prop.entity_id.startswith("P")
-    assert str(prop.label) == SAMPLE_PROPERTY_LABEL
+    assert prop.label.get() == SAMPLE_PROPERTY_LABEL
 
     # Pass entity_id to test function and wait for it to finish
     yield prop.entity_id
