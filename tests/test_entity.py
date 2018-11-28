@@ -4,7 +4,9 @@ from .conftest import (SAMPLE_ITEM_LABEL, SAMPLE_ITEM_LABEL_2,
                        SAMPLE_PROPERTY_LABEL, SAMPLE_PROPERTY_LABEL_2)
 
 ITEM_DESC = "Item description"
+ITEM_ALIAS = "Item alias"
 PROP_DESC = "Property description"
+PROP_ALIAS = "Property alias"
 
 
 def test_item(wb_with_auth, item_id):
@@ -25,6 +27,12 @@ def test_item(wb_with_auth, item_id):
     item.description.set(ITEM_DESC)
     assert item.description.get() == ITEM_DESC
 
+    # Update item aliases
+    item.aliases.add(ITEM_ALIAS)
+    assert ITEM_ALIAS in item.aliases.get()
+    item.aliases.remove(ITEM_ALIAS)
+    assert ITEM_ALIAS not in item.aliases.get()
+
 
 def test_property(wb_with_auth, property_id):
     # Get property
@@ -43,3 +51,9 @@ def test_property(wb_with_auth, property_id):
     # Update property description
     prop.description.set(PROP_DESC)
     assert prop.description.get() == PROP_DESC
+
+    # Update property aliases
+    prop.aliases.add(PROP_ALIAS)
+    assert PROP_ALIAS in prop.aliases.get()
+    prop.aliases.remove(PROP_ALIAS)
+    assert PROP_ALIAS not in prop.aliases.get()
