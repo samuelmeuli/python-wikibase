@@ -18,12 +18,12 @@ def test_item(wb_with_auth, item_id):
     assert results[0]["label"] == SAMPLE_ITEM_LABEL
 
     # Update item label
-    item.set_label(SAMPLE_ITEM_LABEL_2)
-    assert item.label == SAMPLE_ITEM_LABEL_2
+    item.label.set(SAMPLE_ITEM_LABEL_2)
+    assert str(item.label) == SAMPLE_ITEM_LABEL_2
 
     # Update item description
-    item.set_description(ITEM_DESC)
-    assert item.description == ITEM_DESC
+    item.description.set(ITEM_DESC)
+    assert str(item.description) == ITEM_DESC
 
 
 def test_property(wb_with_auth, property_id):
@@ -37,9 +37,9 @@ def test_property(wb_with_auth, property_id):
     assert results[0]["label"] == SAMPLE_PROPERTY_LABEL
 
     # Update property label
-    prop.set_label(SAMPLE_PROPERTY_LABEL_2)
-    assert prop.label == SAMPLE_PROPERTY_LABEL_2
+    prop.label.set(SAMPLE_PROPERTY_LABEL_2)
+    assert str(prop.label) == SAMPLE_PROPERTY_LABEL_2
 
     # Update property description
-    prop.set_description(PROP_DESC)
-    assert prop.description == PROP_DESC
+    prop.description.set(PROP_DESC)
+    assert str(prop.description) == PROP_DESC

@@ -2,6 +2,9 @@ from abc import ABC
 
 from ..utils.exceptions import EditError, NotFoundError
 
+from .description import Description
+from .label import Label
+
 
 class Entity(ABC):
     def __init__(self, wb, language, entity_type):
@@ -28,11 +31,17 @@ class Entity(ABC):
         :return: self
         :rtype: Entity
         """
+        # Create entity
         r = self.wb.entity.add(self.entity_type, content)
-        self.entity_id = r["entity"]["id"]
-        self.label = label
-        self.description = ""
-        # TODO save (empty) attributes
+        entity = r["entity"]
+
+        # Save entity_id and label
+        self.entity_id = entity["id"]
+        self.label = Label(self, entity["labels"])
+
+        # Save empty attributes
+        self.description = Description(self, {})
+
         return self
 
     def get(self, entity_id):
@@ -50,13 +59,17 @@ class Entity(ABC):
             )
 
         entity = r["entities"][entity_id]
+
+        # Save entity_id and label
         self.entity_id = entity["id"]
-        self.label = entity["labels"][self.language]["value"]
+        self.label = Label(self, entity["labels"])
+
+        # Descriptions
         try:
-            self.description = entity["descriptions"][self.language]["value"]
+            self.description = Description(self, entity["descriptions"])
         except KeyError:
-            self.description = ""
-        # TODO save attributes
+            self.description = Description(self, {})
+
         return self
 
     def search(self, label):
@@ -80,36 +93,6 @@ class Entity(ABC):
         r = self.wb.entity.remove(title)
         if "delete" not in r or "error" in r:
             raise EditError("Could not delete entity: " + r)
-
-    def set_label(self, label):
-        """Update the entity's label (title)
-
-        :param label: New label
-        :type label: str
-        """
-        r = self.wb.label.set(self.entity_id, label, self.language)
-        if (
-            "success" not in r
-            or "error" in r
-            or r["entity"]["labels"][self.language]["value"] != label
-        ):
-            raise EditError("Could not update label: " + r)
-        self.label = r["entity"]["labels"][self.language]["value"]
-
-    def set_description(self, description):
-        """Update the entity's description
-
-        :param description: New description
-        :type description: str
-        """
-        r = self.wb.description.set(self.entity_id, description, self.language)
-        if (
-            "success" not in r
-            or "error" in r
-            or r["entity"]["descriptions"][self.language]["value"] != description
-        ):
-            raise EditError("Could not update description: " + r)
-        self.description = r["entity"]["descriptions"][self.language]["value"]
 
 
 class Item(Entity):
