@@ -1,7 +1,7 @@
 from ..utils.exceptions import EditError
 
 
-class Aliases:
+class AliasList:
     def __init__(self, entity, aliases):
         self.entity = entity
 

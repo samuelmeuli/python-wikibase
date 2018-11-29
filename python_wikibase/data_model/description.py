@@ -28,6 +28,8 @@ class Description:
     def set(self, new_description, language=None):
         """Update the entity's description in the specified language (or the entity's default)
 
+        :param new_description: New description to use
+        :type new_description: str
         :param language: Language to update the description for
         :type language: str
         """

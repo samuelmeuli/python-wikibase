@@ -46,7 +46,7 @@ def item_id(wb_with_auth):
     :rtype: str
     """
     # Create item
-    item = wb_with_auth.item.create(SAMPLE_ITEM_LABEL)
+    item = wb_with_auth.Item.create(SAMPLE_ITEM_LABEL)
     assert item.entity_id.startswith("Q")
     assert item.label.get() == SAMPLE_ITEM_LABEL
 
@@ -67,7 +67,7 @@ def property_id(wb_with_auth):
     :rtype: str
     """
     # Create property
-    prop = wb_with_auth.property.create(SAMPLE_PROPERTY_LABEL, "string")
+    prop = wb_with_auth.Property.create(SAMPLE_PROPERTY_LABEL, "string")
     assert prop.entity_id.startswith("P")
     assert prop.label.get() == SAMPLE_PROPERTY_LABEL
 

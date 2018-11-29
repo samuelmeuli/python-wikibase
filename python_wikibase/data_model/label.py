@@ -27,6 +27,8 @@ class Label:
     def set(self, new_label, language=None):
         """Update the entity's label in the specified language (or the entity's default)
 
+        :param new_label: New label to use
+        :type new_label: str
         :param language: Language to update the label for
         :type language: str
         """

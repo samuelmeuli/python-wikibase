@@ -11,12 +11,12 @@ PROP_ALIAS = "Property alias"
 
 def test_item(wb_with_auth, item_id):
     # Get item
-    item = wb_with_auth.item.get(item_id)
+    item = wb_with_auth.Item.get(item_id)
     assert type(item) == Item
     assert item.entity_id == item_id
 
     # Search for item label
-    results = wb_with_auth.item.search(SAMPLE_ITEM_LABEL)
+    results = wb_with_auth.Item.search(SAMPLE_ITEM_LABEL)
     assert results[0]["label"] == SAMPLE_ITEM_LABEL
 
     # Update item label
@@ -36,12 +36,12 @@ def test_item(wb_with_auth, item_id):
 
 def test_property(wb_with_auth, property_id):
     # Get property
-    prop = wb_with_auth.property.get(property_id)
+    prop = wb_with_auth.Property.get(property_id)
     assert type(prop) == Property
     assert prop.entity_id == property_id
 
     # Search for property label
-    results = wb_with_auth.property.search(SAMPLE_PROPERTY_LABEL)
+    results = wb_with_auth.Property.search(SAMPLE_PROPERTY_LABEL)
     assert results[0]["label"] == SAMPLE_PROPERTY_LABEL
 
     # Update property label

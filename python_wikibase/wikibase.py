@@ -35,5 +35,5 @@ class Wikibase:
         )
 
         # Components
-        self.item = Item(wb, language)
-        self.property = Property(wb, language)
+        self.Item = Item(wb, language)
+        self.Property = Property(wb, language)

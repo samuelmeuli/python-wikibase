@@ -1,7 +1,7 @@
 from abc import ABC
 
 from ..utils.exceptions import EditError, NotFoundError
-from .aliases import Aliases
+from .alias import AliasList
 from .description import Description
 from .label import Label
 
@@ -41,7 +41,7 @@ class Entity(ABC):
 
         # Save empty attributes
         self.description = Description(self, {})
-        self.aliases = Aliases(self, {})
+        self.aliases = AliasList(self, {})
 
         return self
 
@@ -72,9 +72,9 @@ class Entity(ABC):
             self.description = Description(self, {})
         # Aliases
         try:
-            self.aliases = Aliases(self, entity["aliases"])
+            self.aliases = AliasList(self, entity["aliases"])
         except KeyError:
-            self.aliases = Aliases(self, {})
+            self.aliases = AliasList(self, {})
 
         return self
 
