@@ -1,16 +1,14 @@
+from ..base import Base
 from ..utils.exceptions import EditError
 
 
-class AliasList:
-    def __init__(self, entity, aliases):
-        self.entity = entity
-
+class AliasList(Base):
+    def parse(self, entity_id, aliases):
+        self.entity_id = entity_id
         self.aliases = {}
         for lang, alias_list in aliases.items():
             self.aliases[lang] = [alias_item["value"] for alias_item in alias_list]
-
-    def __repr__(self):
-        return repr(self.aliases)
+        return self
 
     def get(self, language=None):
         """Get the entity's aliases in the specified language (or use the entity's default)
@@ -21,7 +19,7 @@ class AliasList:
         :rtype: list(str)
         """
         if not language:
-            language = self.entity.language
+            language = self.language
         return self.aliases[language]
 
     def add(self, alias, language=None):
@@ -33,9 +31,9 @@ class AliasList:
         :type language: str
         """
         if not language:
-            language = self.entity.language
+            language = self.language
 
-        r = self.entity.wb.alias.add(self.entity.entity_id, alias, language)
+        r = self.api.alias.add(self.entity_id, alias, language)
         if "success" not in r or "error" in r:
             raise EditError(f"Could not add alias: {r}")
         aliases = r["entity"]["aliases"]
@@ -51,9 +49,9 @@ class AliasList:
         :type language: str
         """
         if not language:
-            language = self.entity.language
+            language = self.language
 
-        r = self.entity.wb.alias.remove(self.entity.entity_id, alias, language)
+        r = self.api.alias.remove(self.entity_id, alias, language)
         if "success" not in r or "error" in r:
             raise EditError(f"Could not remove alias: {r}")
         self.aliases[language].remove(alias)

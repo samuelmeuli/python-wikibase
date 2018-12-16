@@ -1,13 +1,14 @@
+from ..base import Base
 from ..utils.exceptions import EditError
 
 
-class Description:
-    def __init__(self, entity, descriptions):
-        self.entity = entity
-
+class Description(Base):
+    def parse(self, entity_id, descriptions):
+        self.entity_id = entity_id
         self.descriptions = {}
         for lang, lang_value in descriptions.items():
             self.descriptions[lang] = lang_value["value"]
+        return self
 
     def __repr__(self):
         return repr(self.descriptions)
@@ -21,7 +22,7 @@ class Description:
         :rtype: str
         """
         if not language:
-            language = self.entity.language
+            language = self.language
 
         return self.descriptions[language]
 
@@ -34,9 +35,9 @@ class Description:
         :type language: str
         """
         if not language:
-            language = self.entity.language
+            language = self.language
 
-        r = self.entity.wb.description.set(self.entity.entity_id, new_description, language)
+        r = self.api.description.set(self.entity_id, new_description, language)
         if (
             "success" not in r
             or "error" in r

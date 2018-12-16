@@ -1,13 +1,9 @@
-from abc import ABC
-
+from ..base import Base
 from ..utils.exceptions import EditError, NotFoundError
-from .alias import AliasList
-from .description import Description
-from .label import Label
 
 
-class Entity(ABC):
-    def __init__(self, wb, language, entity_type):
+class Entity(Base):
+    def __init__(self, py_wb, api, language, entity_type):
         """Wikibase entity (item or property)
 
         :param wb: Wikibase API wrapper object
@@ -17,9 +13,13 @@ class Entity(ABC):
         :param entity_type: One of ["item", "property"]
         :type entity_type: str
         """
-        self.wb = wb
-        self.language = language
         self.entity_type = entity_type
+        self.entity_id = None
+        self.label = None
+        self.description = None
+        self.aliases = None
+
+        super().__init__(py_wb, api, language)
 
     def create(self, label, content):
         """Create a new entity with the specified label and content
@@ -32,16 +32,16 @@ class Entity(ABC):
         :rtype: Entity
         """
         # Create entity
-        r = self.wb.entity.add(self.entity_type, content)
+        r = self.api.entity.add(self.entity_type, content)
         entity = r["entity"]
 
         # Save entity_id and label
         self.entity_id = entity["id"]
-        self.label = Label(self, entity["labels"])
+        self.label = self.py_wb.Label.parse(self.entity_id, entity["labels"])
 
         # Save empty attributes
-        self.description = Description(self, {})
-        self.aliases = AliasList(self, {})
+        self.description = self.py_wb.Description.parse(self.entity_id, {})
+        self.aliases = self.py_wb.AliasList.parse(self.entity_id, {})
 
         return self
 
@@ -53,7 +53,7 @@ class Entity(ABC):
         :return: self
         :rtype: Entity
         """
-        r = self.wb.entity.get(entity_id)
+        r = self.api.entity.get(entity_id)
         if "success" not in r or r["success"] != 1:
             raise NotFoundError(
                 'No {} found with the entity_id "{}"'.format(self.entity_type, self.entity_id)
@@ -63,18 +63,18 @@ class Entity(ABC):
 
         # Save entity_id and label
         self.entity_id = entity["id"]
-        self.label = Label(self, entity["labels"])
+        self.label = self.py_wb.Label.parse(self.entity_id, entity["labels"])
 
         # Descriptions
         try:
-            self.description = Description(self, entity["descriptions"])
+            self.description = self.py_wb.Description.parse(self.entity_id, entity["descriptions"])
         except KeyError:
-            self.description = Description(self, {})
+            self.description = self.py_wb.Description.parse(self.entity_id, {})
         # Aliases
         try:
-            self.aliases = AliasList(self, entity["aliases"])
+            self.aliases = self.py_wb.AliasList.parse(self.entity_id, entity["aliases"])
         except KeyError:
-            self.aliases = AliasList(self, {})
+            self.aliases = self.py_wb.AliasList.parse(self.entity_id, {})
 
         return self
 
@@ -86,7 +86,7 @@ class Entity(ABC):
         :return: List of search results (with entity_id and label)
         :rtype: list
         """
-        r = self.wb.entity.search(label, self.language, entity_type=self.entity_type)
+        r = self.api.entity.search(label, self.language, entity_type=self.entity_type)
         results = r["search"]
         return [{"entity_id": result["id"], "label": result["label"]} for result in results]
 
@@ -96,14 +96,14 @@ class Entity(ABC):
             title = "Item:" + self.entity_id
         else:
             title = "Property:" + self.entity_id
-        r = self.wb.entity.remove(title)
+        r = self.api.entity.remove(title)
         if "delete" not in r or "error" in r:
             raise EditError("Could not delete entity: " + r)
 
 
 class Item(Entity):
-    def __init__(self, wb, language):
-        super().__init__(wb, language, "item")
+    def __init__(self, py_wb, wb, language):
+        super().__init__(py_wb, wb, language, "item")
 
     def create(self, label):
         content = {"labels": {self.language: {"language": self.language, "value": label}}}
@@ -111,8 +111,8 @@ class Item(Entity):
 
 
 class Property(Entity):
-    def __init__(self, wb, language):
-        super().__init__(wb, language, "property")
+    def __init__(self, py_wb, wb, language):
+        super().__init__(py_wb, wb, language, "property")
 
     def create(self, label, property_type):
         # TODO improve property type handling

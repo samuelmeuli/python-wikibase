@@ -1,16 +1,14 @@
+from ..base import Base
 from ..utils.exceptions import EditError
 
 
-class Label:
-    def __init__(self, entity, labels):
-        self.entity = entity
-
+class Label(Base):
+    def parse(self, entity_id, labels):
+        self.entity_id = entity_id
         self.labels = {}
         for lang, lang_value in labels.items():
             self.labels[lang] = lang_value["value"]
-
-    def __repr__(self):
-        return repr(self.labels)
+        return self
 
     def get(self, language=None):
         """Get the entity's label in the specified language (or use the entity's default)
@@ -21,7 +19,7 @@ class Label:
         :rtype: str
         """
         if not language:
-            language = self.entity.language
+            language = self.language
         return self.labels[language]
 
     def set(self, new_label, language=None):
@@ -33,8 +31,8 @@ class Label:
         :type language: str
         """
         if not language:
-            language = self.entity.language
-        r = self.entity.wb.label.set(self.entity.entity_id, new_label, language)
+            language = self.language
+        r = self.api.label.set(self.entity_id, new_label, language)
         if (
             "success" not in r
             or "error" in r

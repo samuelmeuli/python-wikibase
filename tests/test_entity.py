@@ -1,7 +1,10 @@
-from python_wikibase.data_model.entity import Item, Property
-
-from .conftest import (SAMPLE_ITEM_LABEL, SAMPLE_ITEM_LABEL_2,
-                       SAMPLE_PROPERTY_LABEL, SAMPLE_PROPERTY_LABEL_2)
+from .conftest import (
+    LANGUAGE,
+    SAMPLE_ITEM_LABEL,
+    SAMPLE_ITEM_LABEL_2,
+    SAMPLE_PROPERTY_LABEL,
+    SAMPLE_PROPERTY_LABEL_2
+)
 
 ITEM_DESC = "Item description"
 ITEM_ALIAS = "Item alias"
@@ -9,19 +12,15 @@ PROP_DESC = "Property description"
 PROP_ALIAS = "Property alias"
 
 
-def test_item(wb_with_auth, item_id):
+def test_item(py_wb, item_id):
     # Get item
-    item = wb_with_auth.Item.get(item_id)
-    assert type(item) == Item
+    item = py_wb.Item.get(item_id)
     assert item.entity_id == item_id
-
-    # Search for item label
-    results = wb_with_auth.Item.search(SAMPLE_ITEM_LABEL)
-    assert results[0]["label"] == SAMPLE_ITEM_LABEL
+    assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL
 
     # Update item label
     item.label.set(SAMPLE_ITEM_LABEL_2)
-    assert item.label.get() == SAMPLE_ITEM_LABEL_2
+    assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL_2
 
     # Update item description
     item.description.set(ITEM_DESC)
@@ -34,19 +33,15 @@ def test_item(wb_with_auth, item_id):
     assert ITEM_ALIAS not in item.aliases.get()
 
 
-def test_property(wb_with_auth, property_id):
+def test_property(py_wb, property_id):
     # Get property
-    prop = wb_with_auth.Property.get(property_id)
-    assert type(prop) == Property
+    prop = py_wb.Property.get(property_id)
     assert prop.entity_id == property_id
-
-    # Search for property label
-    results = wb_with_auth.Property.search(SAMPLE_PROPERTY_LABEL)
-    assert results[0]["label"] == SAMPLE_PROPERTY_LABEL
+    assert prop.label.get(LANGUAGE) == SAMPLE_PROPERTY_LABEL
 
     # Update property label
     prop.label.set(SAMPLE_PROPERTY_LABEL_2)
-    assert prop.label.get() == SAMPLE_PROPERTY_LABEL_2
+    assert prop.label.get(LANGUAGE) == SAMPLE_PROPERTY_LABEL_2
 
     # Update property description
     prop.description.set(PROP_DESC)

@@ -1,4 +1,4 @@
 from .utils import EditError, NotFoundError
-from .wikibase import Wikibase
+from .python_wikibase import PyWikibase
 
-__all__ = ["EditError", "NotFoundError", "Wikibase"]
+__all__ = ["PyWikibase", "EditError", "NotFoundError"]

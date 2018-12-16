@@ -1,17 +1,17 @@
 from wikibase_api import Wikibase as WikibaseApi
 
-from .data_model.entity import Item, Property
+from .data_model import AliasList, Description, Item, Label, Property
 
 DEFAULT_CONFIG = {
     "api_url": "https://www.wikidata.org/w/api.php",
-    "oauth_credentials": None,
-    "login_credentials": None,
+    "oauth_credentials": {},
+    "login_credentials": {},
     "is_bot": False,
     "summary": "Modified using wikibase-api for Python",
 }
 
 
-class Wikibase:
+class PyWikibase:
     def __init__(
         self,
         # wikibase-api params
@@ -25,7 +25,7 @@ class Wikibase:
         language="en",
     ):
         # Create instance of wikibase-api's Wikibase class (includes authentication)
-        wb = WikibaseApi(
+        api = WikibaseApi(
             api_url=api_url,
             oauth_credentials=oauth_credentials,
             login_credentials=login_credentials,
@@ -33,7 +33,10 @@ class Wikibase:
             summary=summary,
             config_path=config_path,
         )
+        language = language
 
-        # Components
-        self.Item = Item(wb, language)
-        self.Property = Property(wb, language)
+        self.AliasList = AliasList(self, api, language)
+        self.Description = Description(self, api, language)
+        self.Label = Label(self, api, language)
+        self.Item = Item(self, api, language)
+        self.Property = Property(self, api, language)
