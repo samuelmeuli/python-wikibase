@@ -8,7 +8,7 @@ class Description(Base):
         self.descriptions = {}
         self.entity_id = None
 
-    def parse(self, entity_id, descriptions):
+    def unmarshal(self, entity_id, descriptions):
         self.entity_id = entity_id
         for lang, lang_value in descriptions.items():
             self.descriptions[lang] = lang_value["value"]

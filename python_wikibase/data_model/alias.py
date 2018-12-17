@@ -8,7 +8,7 @@ class AliasList(Base):
         self.aliases = {}
         self.entity_id = None
 
-    def parse(self, entity_id, aliases):
+    def unmarshal(self, entity_id, aliases):
         self.entity_id = entity_id
         for lang, alias_list in aliases.items():
             self.aliases[lang] = [alias_item["value"] for alias_item in alias_list]
