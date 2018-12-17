@@ -3,9 +3,13 @@ from ..utils.exceptions import EditError
 
 
 class AliasList(Base):
+    def __init__(self, py_wb, api, language):
+        super().__init__(py_wb, api, language)
+        self.aliases = {}
+        self.entity_id = None
+
     def parse(self, entity_id, aliases):
         self.entity_id = entity_id
-        self.aliases = {}
         for lang, alias_list in aliases.items():
             self.aliases[lang] = [alias_item["value"] for alias_item in alias_list]
         return self

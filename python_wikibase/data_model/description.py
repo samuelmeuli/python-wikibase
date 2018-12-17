@@ -3,9 +3,13 @@ from ..utils.exceptions import EditError
 
 
 class Description(Base):
+    def __init__(self, py_wb, api, language):
+        super().__init__(py_wb, api, language)
+        self.descriptions = {}
+        self.entity_id = None
+
     def parse(self, entity_id, descriptions):
         self.entity_id = entity_id
-        self.descriptions = {}
         for lang, lang_value in descriptions.items():
             self.descriptions[lang] = lang_value["value"]
         return self

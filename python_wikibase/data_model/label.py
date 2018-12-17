@@ -3,9 +3,13 @@ from ..utils.exceptions import EditError
 
 
 class Label(Base):
+    def __init__(self, py_wb, api, language):
+        super().__init__(py_wb, api, language)
+        self.entity_id = None
+        self.labels = {}
+
     def parse(self, entity_id, labels):
         self.entity_id = entity_id
-        self.labels = {}
         for lang, lang_value in labels.items():
             self.labels[lang] = lang_value["value"]
         return self
