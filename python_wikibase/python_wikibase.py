@@ -25,7 +25,7 @@ class PyWikibase:
         language="en",
     ):
         # Create instance of wikibase-api's Wikibase class (includes authentication)
-        api = WikibaseApi(
+        self.api = WikibaseApi(
             api_url=api_url,
             oauth_credentials=oauth_credentials,
             login_credentials=login_credentials,
@@ -33,10 +33,19 @@ class PyWikibase:
             summary=summary,
             config_path=config_path,
         )
-        language = language
+        self.language = language
 
-        self.AliasList = AliasList(self, api, language)
-        self.Description = Description(self, api, language)
-        self.Label = Label(self, api, language)
-        self.Item = Item(self, api, language)
-        self.Property = Property(self, api, language)
+    def AliasList(self):
+        return AliasList(self, self.api, self.language)
+
+    def Description(self):
+        return Description(self, self.api, self.language)
+
+    def Item(self):
+        return Item(self, self.api, self.language)
+
+    def Label(self):
+        return Label(self, self.api, self.language)
+
+    def Property(self):
+        return Property(self, self.api, self.language)

@@ -37,11 +37,11 @@ class Entity(Base):
 
         # Save entity_id and label
         self.entity_id = entity["id"]
-        self.label = self.py_wb.Label.parse(self.entity_id, entity["labels"])
+        self.label = self.py_wb.Label().parse(self.entity_id, entity["labels"])
 
         # Save empty attributes
-        self.description = self.py_wb.Description.parse(self.entity_id, {})
-        self.aliases = self.py_wb.AliasList.parse(self.entity_id, {})
+        self.description = self.py_wb.Description().parse(self.entity_id, {})
+        self.aliases = self.py_wb.AliasList().parse(self.entity_id, {})
 
         return self
 
@@ -67,18 +67,20 @@ class Entity(Base):
 
         # Save entity_id and label
         self.entity_id = entity["id"]
-        self.label = self.py_wb.Label.parse(self.entity_id, entity["labels"])
+        self.label = self.py_wb.Label().parse(self.entity_id, entity["labels"])
 
         # Descriptions
         try:
-            self.description = self.py_wb.Description.parse(self.entity_id, entity["descriptions"])
+            self.description = self.py_wb.Description().parse(
+                self.entity_id, entity["descriptions"]
+            )
         except KeyError:
-            self.description = self.py_wb.Description.parse(self.entity_id, {})
+            self.description = self.py_wb.Description().parse(self.entity_id, {})
         # Aliases
         try:
-            self.aliases = self.py_wb.AliasList.parse(self.entity_id, entity["aliases"])
+            self.aliases = self.py_wb.AliasList().parse(self.entity_id, entity["aliases"])
         except KeyError:
-            self.aliases = self.py_wb.AliasList.parse(self.entity_id, {})
+            self.aliases = self.py_wb.AliasList().parse(self.entity_id, {})
 
         return self
 

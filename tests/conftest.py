@@ -11,7 +11,6 @@ LANGUAGE = "en"
 SAMPLE_ITEM_LABEL = "Test item"
 SAMPLE_ITEM_LABEL_2 = "Test item 2"
 SAMPLE_PROPERTY_LABEL = "Test property"
-SAMPLE_PROPERTY_LABEL_2 = "Test property 2"
 
 
 @pytest.fixture(scope="session")
@@ -37,7 +36,7 @@ def item_id(py_wb):
     :rtype: str
     """
     # Create item
-    item = py_wb.Item.create(SAMPLE_ITEM_LABEL)
+    item = py_wb.Item().create(SAMPLE_ITEM_LABEL)
     assert item.entity_id.startswith("Q")
     assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL
 
@@ -58,7 +57,7 @@ def property_id(py_wb):
     :rtype: str
     """
     # Create property
-    prop = py_wb.Property.create(SAMPLE_PROPERTY_LABEL, "string")
+    prop = py_wb.Property().create(SAMPLE_PROPERTY_LABEL, "string")
     assert prop.entity_id.startswith("P")
     assert prop.label.get(LANGUAGE) == SAMPLE_PROPERTY_LABEL
 
