@@ -1,5 +1,6 @@
 from ..base import Base
 from ..utils.exceptions import EditError, NotFoundError
+from ..utils.property_types import property_types
 
 
 class Entity(Base):
@@ -21,7 +22,7 @@ class Entity(Base):
 
         super().__init__(py_wb, api, language)
 
-    def create(self, label, content):
+    def _create(self, label, content):
         """Create a new entity with the specified label and content
 
         :param label: Label of the new entity
@@ -113,17 +114,21 @@ class Item(Entity):
 
     def create(self, label):
         content = {"labels": {self.language: {"language": self.language, "value": label}}}
-        return super().create(label, content)
+        return super()._create(label, content)
 
 
 class Property(Entity):
     def __init__(self, py_wb, wb, language):
         super().__init__(py_wb, wb, language, "property")
 
-    def create(self, label, property_type):
-        # TODO improve property type handling
+    def create(self, label, property_type="string"):
+        if property_type not in property_types:
+            raise ValueError(
+                f'"{property_type}" is not a valid property_type, must be one of must be one of '
+                "{property_types}"
+            )
         content = {
             "labels": {self.language: {"language": self.language, "value": label}},
             "datatype": property_type,
         }
-        return super().create(label, content)
+        return super()._create(label, content)
