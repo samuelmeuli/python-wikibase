@@ -5,11 +5,11 @@ from ..utils.exceptions import EditError
 class Label(Base):
     def __init__(self, py_wb, api, language):
         super().__init__(py_wb, api, language)
-        self.entity_id = None
+        self.item_id = None
         self.labels = {}
 
-    def unmarshal(self, entity_id, labels):
-        self.entity_id = entity_id
+    def unmarshal(self, item_id, labels):
+        self.item_id = item_id
         for lang, lang_value in labels.items():
             self.labels[lang] = lang_value["value"]
         return self
@@ -36,7 +36,7 @@ class Label(Base):
         """
         if not language:
             language = self.language
-        r = self.api.label.set(self.entity_id, new_label, language)
+        r = self.api.label.set(self.item_id, new_label, language)
         if (
             "success" not in r
             or "error" in r

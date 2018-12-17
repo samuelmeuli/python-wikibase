@@ -6,10 +6,10 @@ class Description(Base):
     def __init__(self, py_wb, api, language):
         super().__init__(py_wb, api, language)
         self.descriptions = {}
-        self.entity_id = None
+        self.item_id = None
 
-    def unmarshal(self, entity_id, descriptions):
-        self.entity_id = entity_id
+    def unmarshal(self, item_id, descriptions):
+        self.item_id = item_id
         for lang, lang_value in descriptions.items():
             self.descriptions[lang] = lang_value["value"]
         return self
@@ -41,7 +41,7 @@ class Description(Base):
         if not language:
             language = self.language
 
-        r = self.api.description.set(self.entity_id, new_description, language)
+        r = self.api.description.set(self.item_id, new_description, language)
         if (
             "success" not in r
             or "error" in r
