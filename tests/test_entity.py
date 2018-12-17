@@ -13,7 +13,7 @@ PROP_ALIAS = "Property alias"
 
 def test_item(py_wb, item_id):
     # Get item
-    item = py_wb.Item().get(item_id)
+    item = py_wb.Item().get(entity_id=item_id)
     assert item.entity_id == item_id
     assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL
 
@@ -34,6 +34,6 @@ def test_item(py_wb, item_id):
 
 def test_property(py_wb, property_id):
     # Get property
-    prop = py_wb.Property().get(property_id)
+    prop = py_wb.Property().get(entity_id=property_id)
     assert prop.entity_id == property_id
     assert prop.label.get(LANGUAGE) == SAMPLE_PROPERTY_LABEL

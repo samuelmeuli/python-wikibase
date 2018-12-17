@@ -7,8 +7,8 @@ class Entity(Base):
     def __init__(self, py_wb, api, language, entity_type):
         """Wikibase entity (item or property)
 
-        :param wb: Wikibase API wrapper object
-        :type wb: Wikibase
+        :param py_wb: PyWikibase API wrapper object
+        :type py_wb: Wikibase
         :param language: Language for searches and edits on Wikibase
         :type language: str
         :param entity_type: One of ["item", "property"]
@@ -22,11 +22,9 @@ class Entity(Base):
 
         super().__init__(py_wb, api, language)
 
-    def _create(self, label, content):
+    def _create(self, content):
         """Create a new entity with the specified label and content
 
-        :param label: Label of the new entity
-        :type label: str
         :param content: Content of the new entity
         :type content: dict
         :return: self
@@ -46,7 +44,7 @@ class Entity(Base):
 
         return self
 
-    def get(self, entity_id):
+    def get(self, entity_id=None):
         """Fetch information about the specified entity from Wikibase
 
         :param entity_id: ID of the entity on Wikibase (e.g. "Q1")
@@ -54,6 +52,15 @@ class Entity(Base):
         :return: self
         :rtype: Entity
         """
+        if not entity_id:
+            if not self.entity_id:
+                raise ValueError(
+                    f"You need to specify the {self.entity_type}'s entity_id before being able to "
+                    f"use the get() function"
+                )
+            else:
+                entity_id = self.entity_id
+
         r = self.api.entity.get(entity_id)
         if "success" not in r or r["success"] != 1:
             raise NotFoundError(
@@ -68,7 +75,6 @@ class Entity(Base):
 
         # Save entity_id and label
         self.entity_id = entity["id"]
-        # Descriptions
         self.label = self.py_wb.Label().unmarshal(self.entity_id, entity["labels"])
 
         # Save other attributes
@@ -96,7 +102,7 @@ class Item(Entity):
 
     def create(self, label):
         content = {"labels": {self.language: {"language": self.language, "value": label}}}
-        return super()._create(label, content)
+        return super()._create(content)
 
 
 class Property(Entity):
@@ -113,4 +119,4 @@ class Property(Entity):
             "labels": {self.language: {"language": self.language, "value": label}},
             "datatype": property_type,
         }
-        return super()._create(label, content)
+        return super()._create(content)
