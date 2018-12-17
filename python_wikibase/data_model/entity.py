@@ -79,18 +79,6 @@ class Entity(Base):
 
         return self
 
-    def search(self, label):
-        """Search Wikibase for entities with the specified label
-
-        :param label: Label of the desired entity
-        :type label: str
-        :return: List of search results (with entity_id and label)
-        :rtype: list
-        """
-        r = self.api.entity.search(label, self.language, entity_type=self.entity_type)
-        results = r["search"]
-        return [{"entity_id": result["id"], "label": result["label"]} for result in results]
-
     def delete(self):
         """Delete the entity from Wikibase"""
         if self.entity_type == "item":
