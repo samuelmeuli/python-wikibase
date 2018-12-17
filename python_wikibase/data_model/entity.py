@@ -60,6 +60,10 @@ class Entity(Base):
             )
 
         entity = r["entities"][entity_id]
+        if "missing" in entity:
+            raise NotFoundError(
+                'No {} found with the entity_id "{}"'.format(self.entity_type, self.entity_id)
+            )
 
         # Save entity_id and label
         self.entity_id = entity["id"]
