@@ -1,6 +1,16 @@
 from wikibase_api import Wikibase as WikibaseApi
 
-from .data_model import AliasList, Description, Item, Label, Property
+from .data_model import (
+    Aliases,
+    Claim,
+    Claims,
+    Description,
+    ExternalId,
+    GeoLocation,
+    Item,
+    Label,
+    Property,
+)
 
 DEFAULT_CONFIG = {
     "api_url": "https://www.wikidata.org/w/api.php",
@@ -35,11 +45,23 @@ class PyWikibase:
         )
         self.language = language
 
-    def AliasList(self):
-        return AliasList(self, self.api, self.language)
+    def Aliases(self):
+        return Aliases(self, self.api, self.language)
+
+    def Claim(self):
+        return Claim(self, self.api, self.language)
+
+    def Claims(self):
+        return Claims(self, self.api, self.language)
 
     def Description(self):
         return Description(self, self.api, self.language)
+
+    def ExternalId(self):
+        return ExternalId(self, self.api, self.language)
+
+    def GeoLocation(self):
+        return GeoLocation(self, self.api, self.language)
 
     def Item(self):
         return Item(self, self.api, self.language)

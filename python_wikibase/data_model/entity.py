@@ -19,6 +19,7 @@ class Entity(Base):
         self.label = None
         self.description = None
         self.aliases = None
+        self.claims = None
 
         super().__init__(py_wb, api, language)
 
@@ -40,7 +41,8 @@ class Entity(Base):
 
         # Save empty attributes
         self.description = self.py_wb.Description().unmarshal(self.entity_id, {})
-        self.aliases = self.py_wb.AliasList().unmarshal(self.entity_id, {})
+        self.aliases = self.py_wb.Aliases().unmarshal(self.entity_id, {})
+        self.claims = self.py_wb.Claims().unmarshal(self.entity_id, {})
 
         return self
 
@@ -81,7 +83,8 @@ class Entity(Base):
         self.description = self.py_wb.Description().unmarshal(
             self.entity_id, entity["descriptions"]
         )
-        self.aliases = self.py_wb.AliasList().unmarshal(self.entity_id, entity["aliases"])
+        self.aliases = self.py_wb.Aliases().unmarshal(self.entity_id, entity["aliases"])
+        self.claims = self.py_wb.Claims().unmarshal(self.entity_id, entity["claims"])
 
         return self
 
@@ -109,14 +112,14 @@ class Property(Entity):
     def __init__(self, py_wb, wb, language):
         super().__init__(py_wb, wb, language, "property")
 
-    def create(self, label, property_type="string"):
-        if property_type not in property_types:
+    def create(self, label, property_type="str"):
+        if property_type not in property_types.keys():
             raise ValueError(
                 f'"{property_type}" is not a valid property_type, must be one of must be one of '
-                "{property_types}"
+                f"{property_types.keys()}"
             )
         content = {
             "labels": {self.language: {"language": self.language, "value": label}},
-            "datatype": property_type,
+            "datatype": property_types[property_type],
         }
         return super()._create(content)

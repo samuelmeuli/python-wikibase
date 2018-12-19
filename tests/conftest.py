@@ -57,7 +57,7 @@ def property_id(py_wb):
     :rtype: str
     """
     # Create property
-    prop = py_wb.Property().create(SAMPLE_PROPERTY_LABEL, "string")
+    prop = py_wb.Property().create(SAMPLE_PROPERTY_LABEL)
     assert prop.entity_id.startswith("P")
     assert prop.label.get(LANGUAGE) == SAMPLE_PROPERTY_LABEL
 

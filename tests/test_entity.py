@@ -1,9 +1,4 @@
-from .conftest import (
-    LANGUAGE,
-    SAMPLE_ITEM_LABEL,
-    SAMPLE_ITEM_LABEL_2,
-    SAMPLE_PROPERTY_LABEL,
-)
+from .conftest import LANGUAGE, SAMPLE_ITEM_LABEL, SAMPLE_ITEM_LABEL_2, SAMPLE_PROPERTY_LABEL
 
 ITEM_DESC = "Item description"
 ITEM_ALIAS = "Item alias"
@@ -12,7 +7,6 @@ PROP_ALIAS = "Property alias"
 
 
 def test_item(py_wb, item_id):
-    # Get item
     item = py_wb.Item().get(entity_id=item_id)
     assert item.entity_id == item_id
     assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL

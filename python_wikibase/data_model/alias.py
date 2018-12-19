@@ -2,7 +2,7 @@ from ..base import Base
 from ..utils.exceptions import EditError
 
 
-class AliasList(Base):
+class Aliases(Base):
     def __init__(self, py_wb, api, language):
         super().__init__(py_wb, api, language)
         self.aliases = {}
