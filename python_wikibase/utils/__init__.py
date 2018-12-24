@@ -1,3 +1,3 @@
-from .exceptions import EditError, NotFoundError
+from .exceptions import DuplicateError, EditError, NotFoundError, SearchError
 
-__all__ = ["EditError", "NotFoundError"]
+__all__ = ["DuplicateError", "EditError", "NotFoundError", "SearchError"]

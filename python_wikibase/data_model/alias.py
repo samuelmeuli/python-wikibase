@@ -1,3 +1,5 @@
+from wikibase_api import ApiError
+
 from ..base import Base
 from ..utils.exceptions import EditError
 
@@ -37,12 +39,13 @@ class Aliases(Base):
         if not language:
             language = self.language
 
-        r = self.api.alias.add(self.item_id, alias, language)
-        if "success" not in r or "error" in r:
-            raise EditError(f"Could not add alias: {r}")
-        aliases = r["entity"]["aliases"]
-        for lang, alias_list in aliases.items():
-            self.aliases[lang] = [alias_item["value"] for alias_item in alias_list]
+        try:
+            r = self.api.alias.add(self.item_id, alias, language)
+            aliases = r["entity"]["aliases"]
+            for lang, alias_list in aliases.items():
+                self.aliases[lang] = [alias_item["value"] for alias_item in alias_list]
+        except ApiError as e:
+            raise EditError(f"Could not add alias: {e}") from None
 
     def remove(self, alias, language=None):
         """Remove the provided alias in the specified language (or the entity's default)
@@ -55,7 +58,8 @@ class Aliases(Base):
         if not language:
             language = self.language
 
-        r = self.api.alias.remove(self.item_id, alias, language)
-        if "success" not in r or "error" in r:
-            raise EditError(f"Could not remove alias: {r}")
-        self.aliases[language].remove(alias)
+        try:
+            self.api.alias.remove(self.item_id, alias, language)
+            self.aliases[language].remove(alias)
+        except ApiError as e:
+            raise EditError(f"Could not remove alias: {e}") from None

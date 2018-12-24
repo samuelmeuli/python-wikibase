@@ -1,6 +1,20 @@
+# Searching
+
+
+class SearchError(Exception):
+    pass
+
+
+class NotFoundError(SearchError):
+    pass
+
+
+# Editing
+
+
 class EditError(Exception):
     pass
 
 
-class NotFoundError(Exception):
+class DuplicateError(EditError):
     pass

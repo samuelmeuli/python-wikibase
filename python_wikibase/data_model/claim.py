@@ -1,5 +1,8 @@
+from wikibase_api import ApiError
+
 from .data_type import marshal_data_type, unmarshal_data_value
 from ..base import Base
+from ..utils.exceptions import EditError
 
 
 class Claims(Base):
@@ -27,13 +30,16 @@ class Claims(Base):
     def _create_and_add(self, prop, value, snak_type):
         # Create claim
         prop_id = prop.entity_id
-        if value:
-            value_marshalled = marshal_data_type(value)
-            r = self.py_wb.api.claim.add(
-                self.item_id, prop_id, value_marshalled, snak_type=snak_type
-            )
-        else:
-            r = self.py_wb.api.claim.add(self.item_id, prop_id, None, snak_type=snak_type)
+        try:
+            if value:
+                value_marshalled = marshal_data_type(value)
+                r = self.py_wb.api.claim.add(
+                    self.item_id, prop_id, value_marshalled, snak_type=snak_type
+                )
+            else:
+                r = self.py_wb.api.claim.add(self.item_id, prop_id, None, snak_type=snak_type)
+        except ApiError as e:
+            raise EditError(f"Could not create claim: {e}") from None
 
         # Save claim in Claims
         new_claim = self.py_wb.Claim().unmarshal(self.item_id, r["claim"])
@@ -55,7 +61,10 @@ class Claims(Base):
             raise ValueError(f'"claim" parameter must be instance of Claim class')
 
         # Delete claim
-        self.py_wb.api.claim.remove(claim.claim_id)
+        try:
+            self.py_wb.api.claim.remove(claim.claim_id)
+        except ApiError as e:
+            raise EditError(f"Could not delete claim: {e}") from None
 
         # Remove claim from Claims
         prop_id = claim.property.entity_id

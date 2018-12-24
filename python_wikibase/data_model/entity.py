@@ -1,5 +1,7 @@
+from wikibase_api import ApiError
+
 from ..base import Base
-from ..utils.exceptions import EditError, NotFoundError
+from ..utils.exceptions import EditError, NotFoundError, SearchError
 from ..utils.property_types import property_types
 
 
@@ -32,7 +34,10 @@ class Entity(Base):
         :rtype: Entity
         """
         # Create entity
-        r = self.api.entity.add(self.entity_type, content)
+        try:
+            r = self.api.entity.add(self.entity_type, content)
+        except ApiError as e:
+            raise EditError(f"Could not create {self.entity_type}: {e}") from None
         entity = r["entity"]
 
         # Save entity_id and label
@@ -63,7 +68,10 @@ class Entity(Base):
             else:
                 entity_id = self.entity_id
 
-        r = self.api.entity.get(entity_id)
+        try:
+            r = self.api.entity.get(entity_id)
+        except ApiError as e:
+            raise SearchError(f"Could not get {self.entity_type}: {e}") from None
         if "success" not in r or r["success"] != 1:
             raise NotFoundError(
                 'No {} found with the entity_id "{}"'.format(self.entity_type, self.entity_id)
@@ -94,9 +102,10 @@ class Entity(Base):
             title = "Item:" + self.entity_id
         else:
             title = "Property:" + self.entity_id
-        r = self.api.entity.remove(title)
-        if "delete" not in r or "error" in r:
-            raise EditError("Could not delete entity: " + r)
+        try:
+            self.api.entity.remove(title)
+        except ApiError as e:
+            raise EditError(f"Could not delete {self.entity_type}: {e}") from None
 
 
 class Item(Entity):

@@ -1,5 +1,9 @@
+import json
+
+from wikibase_api import ApiError
+
 from ..base import Base
-from ..utils.exceptions import EditError
+from ..utils.exceptions import DuplicateError, EditError
 
 
 class Description(Base):
@@ -41,11 +45,18 @@ class Description(Base):
         if not language:
             language = self.language
 
-        r = self.api.description.set(self.item_id, new_description, language)
-        if (
-            "success" not in r
-            or "error" in r
-            or r["entity"]["descriptions"][language]["value"] != new_description
-        ):
-            raise EditError("Could not update description: " + r)
-        self.descriptions[language] = r["entity"]["descriptions"][language]["value"]
+        try:
+            r = self.api.description.set(self.item_id, new_description, language)
+            self.descriptions[language] = r["entity"]["descriptions"][language]["value"]
+        except ApiError as e:
+            r_dict = json.loads(str(e))
+            if (
+                "messages" in r_dict
+                and r_dict["messages"][0]["name"]
+                == "wikibase-validator-label-with-description-conflict"
+            ):
+                raise DuplicateError(
+                    "Another entity with the same label and description already exists"
+                ) from None
+            else:
+                raise EditError("Could not update description: " + e) from None

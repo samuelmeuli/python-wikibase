@@ -1,3 +1,5 @@
+from wikibase_api import ApiError
+
 from ..base import Base
 from ..utils.exceptions import EditError
 
@@ -36,11 +38,9 @@ class Label(Base):
         """
         if not language:
             language = self.language
-        r = self.api.label.set(self.item_id, new_label, language)
-        if (
-            "success" not in r
-            or "error" in r
-            or r["entity"]["labels"][language]["value"] != new_label
-        ):
-            raise EditError("Could not update label: " + r)
-        self.labels[language] = r["entity"]["labels"][language]["value"]
+
+        try:
+            r = self.api.label.set(self.item_id, new_label, language)
+            self.labels[language] = r["entity"]["labels"][language]["value"]
+        except ApiError as e:
+            raise EditError(f"Could not update label: {e}") from None
