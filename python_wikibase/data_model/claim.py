@@ -1,5 +1,4 @@
 from .data_type import marshal_data_type, unmarshal_data_value
-from .entity import Property
 from ..base import Base
 
 
@@ -26,14 +25,10 @@ class Claims(Base):
             self.claims[prop_id] = [claim]
 
     def _create_and_add(self, prop, value, snak_type):
-        # Parameter validation
-        if not isinstance(prop, Property):
-            raise ValueError(f'"prop" parameter must be instance of Property class')
-
         # Create claim
         prop_id = prop.entity_id
         if value:
-            value_marshalled = value.marshal()
+            value_marshalled = marshal_data_type(value)
             r = self.py_wb.api.claim.add(
                 self.item_id, prop_id, value_marshalled, snak_type=snak_type
             )
@@ -105,6 +100,3 @@ class Claim(Base):
         if self.snak_type == "value":
             self.value = unmarshal_data_value(self.py_wb, main_snak)
         return self
-
-    def marshal(self):
-        return marshal_data_type(self.value)
