@@ -1,7 +1,7 @@
 from wikibase_api import ApiError
 
-from .data_type import marshal_data_type, unmarshal_data_value
 from ..base import Base
+from ..data_types.data_type import marshal_data_type, unmarshal_data_value
 from ..utils.exceptions import EditError
 
 

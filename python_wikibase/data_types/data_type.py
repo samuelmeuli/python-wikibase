@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from .entity import Item, Property
 from ..base import Base
+from ..data_model.entity import Item, Property
 
 
 def unmarshal_data_value(py_wb, main_snak):
@@ -30,7 +30,7 @@ def unmarshal_data_value(py_wb, main_snak):
     elif data_type == "math":
         raise NotImplementedError  # TODO
     elif data_type == "quantity":
-        raise NotImplementedError  # TODO
+        return py_wb.Quantity().unmarshal(data_value)
     elif data_type == "tabular-data":
         raise NotImplementedError  # TODO
     elif data_type == "time":
@@ -92,59 +92,3 @@ class DataType(Base):
     @abstractmethod
     def create(self, *args, **kwargs):
         pass
-
-
-class ExternalId(DataType):
-    def __init__(self, py_wb, api, language):
-        super().__init__(py_wb, api, language)
-        self.external_id = None
-
-    def unmarshal(self, data_value):
-        self.external_id = data_value["value"]
-        return self
-
-    def marshal(self):
-        return self.external_id
-
-    def create(self, external_id):
-        self.external_id = external_id
-        return self
-
-
-class GeoLocation(DataType):
-    def __init__(self, py_wb, api, language):
-        super().__init__(py_wb, api, language)
-        self.latitude = None
-        self.longitude = None
-        self.altitude = None
-        self.precision = 1 / 3600
-        self.globe = None
-
-    def unmarshal(self, data_value):
-        coord_value = data_value["value"]
-        self.latitude = coord_value["latitude"]
-        self.longitude = coord_value["longitude"]
-        self.altitude = coord_value["altitude"]
-        self.precision = coord_value["precision"]
-        self.globe = coord_value["globe"]
-        return self
-
-    def marshal(self):
-        marshalled = {
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-            "precision": self.precision,
-        }
-        if self.altitude:
-            marshalled["altitude"] = self.altitude
-        if self.globe:
-            marshalled["globe"] = self.globe
-        return marshalled
-
-    def create(self, latitude, longitude, altitude=None, precision=(1 / 3600), globe=None):
-        self.latitude = latitude
-        self.longitude = longitude
-        self.altitude = altitude
-        self.precision = precision
-        self.globe = globe
-        return self
