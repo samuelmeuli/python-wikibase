@@ -55,7 +55,7 @@ def unmarshal_data_value(py_wb, main_snak):
         return prop
 
     else:
-        raise NotImplementedError
+        raise NotImplementedError(f'No unmarshalling function for data type "{data_type}" defined')
 
 
 def marshal_data_type(value):
@@ -74,7 +74,7 @@ def marshal_data_type(value):
         return {"entity-type": "property", "numeric-id": int(value.entity_id[1:])}
 
     else:
-        raise NotImplementedError
+        raise TypeError("Value must be a string, Item, Property, or a subclass of DataType")
 
 
 class DataType(Base):
