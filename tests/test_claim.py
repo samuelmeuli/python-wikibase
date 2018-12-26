@@ -9,6 +9,13 @@ class TestClaim:
         claim = item.claims.add(prop, CLAIM_STR)
         assert claim.value == CLAIM_STR
 
+    # Item
+
+    def test_item(self, py_wb, item, prop_item):
+        item_2 = py_wb.Item().create("Item 2")
+        claim = item.claims.add(prop_item, item_2)
+        assert claim.value.entity_id == item_2.entity_id
+
     # ExternalId
 
     def test_external_id(self, py_wb, item, prop_external_id):

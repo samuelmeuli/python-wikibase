@@ -4,6 +4,7 @@ from tests.constants import REFERENCE_STR
 # The following data types are not supported as reference values by Wikibase:
 # - ExternalId
 # - GeoLocation
+# - Item
 
 class TestReference:
 

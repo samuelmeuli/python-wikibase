@@ -9,6 +9,13 @@ class TestQualifier:
         qualifier = claim.qualifiers.add(prop, QUALIFIER_STR)
         assert qualifier.value == QUALIFIER_STR
 
+    # Item
+
+    def test_item(self, py_wb, claim, prop_item):
+        item_2 = py_wb.Item().create("Item 2")
+        qualifier = claim.qualifiers.add(prop_item, item_2)
+        assert qualifier.value.entity_id == item_2.entity_id
+
     # ExternalId
 
     def test_external_id(self, py_wb, claim, prop_external_id):

@@ -12,6 +12,7 @@ from tests.constants import (
     PROP_GEO_LOCATION_LABEL,
     PROP_LABEL,
     PROP_QUANTITY_LABEL,
+    PROP_ITEM_LABEL
 )
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -81,6 +82,14 @@ def prop(py_wb):
 def prop_external_id(py_wb):
     prop = py_wb.Property().create(PROP_EXTERNAL_ID_LABEL, property_type="ExternalId")
     assert prop.label.get(LANGUAGE) == PROP_EXTERNAL_ID_LABEL
+    yield prop
+    prop.delete()
+
+
+@pytest.fixture(scope="function")
+def prop_item(py_wb):
+    prop = py_wb.Property().create(PROP_ITEM_LABEL, property_type="Item")
+    assert prop.label.get(LANGUAGE) == PROP_ITEM_LABEL
     yield prop
     prop.delete()
 
