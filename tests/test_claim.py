@@ -1,77 +1,41 @@
-import pytest
-
-from tests.conftest import LANGUAGE
-
-
-@pytest.fixture(scope="function")
-def external_id_prop(py_wb):
-    prop_name = "ExternalId prop"
-    prop = py_wb.Property().create(prop_name, property_type="ExternalId")
-    assert prop.label.get(LANGUAGE) == prop_name
-    yield prop
-    prop.delete()
-
-
-@pytest.fixture(scope="function")
-def geo_location_prop(py_wb):
-    prop_name = "GeoLocation prop"
-    prop = py_wb.Property().create(prop_name, property_type="GeoLocation")
-    assert prop.label.get(LANGUAGE) == prop_name
-    yield prop
-    prop.delete()
-
-
-@pytest.fixture(scope="function")
-def quantity_prop(py_wb):
-    prop_name = "Quantity prop"
-    prop = py_wb.Property().create(prop_name, property_type="Quantity")
-    assert prop.label.get(LANGUAGE) == prop_name
-    yield prop
-    prop.delete()
-
-
-@pytest.fixture(scope="function")
-def quantity_unit_item(py_wb):
-    item_name = "Unit item"
-    item = py_wb.Item().create(item_name)
-    assert item.label.get(LANGUAGE) == item_name
-    yield item
-    item.delete()
+from tests.constants import CLAIM_STR
 
 
 class TestClaim:
 
+    # String
+
+    def test_string(self, item, prop):
+        claims = item.claims.add(prop, CLAIM_STR)
+        assert CLAIM_STR in [claim.value for claim in claims.to_list()]
+
     # ExternalId
 
-    def test_external_id(self, py_wb, item_id, external_id_prop):
-        item = py_wb.Item().get(entity_id=item_id)
-        external_id = py_wb.ExternalId().create("Q1")
-        claims = item.claims.add(external_id_prop, external_id)
+    def test_external_id(self, py_wb, item, prop_external_id):
+        external_id = py_wb.ExternalId().create("ID123")
+        claims = item.claims.add(prop_external_id, external_id)
         assert external_id.marshal() in [claim.value.marshal() for claim in claims.to_list()]
 
     # GeoLocation
 
-    def test_geo_location(self, py_wb, item_id, geo_location_prop):
-        item = py_wb.Item().get(entity_id=item_id)
+    def test_geo_location(self, py_wb, item, prop_geo_location):
         geo_location = py_wb.GeoLocation().create(
             latitude=1.23,
             longitude=1.23,
             precision=0.1,
             globe="http://www.wikidata.org/entity/Q2"
         )
-        claims = item.claims.add(geo_location_prop, geo_location)
+        claims = item.claims.add(prop_geo_location, geo_location)
         assert geo_location.marshal() in [claim.value.marshal() for claim in claims.to_list()]
 
     # Quantity
 
-    def test_quantity_without_unit(self, py_wb, item_id, quantity_prop):
-        item = py_wb.Item().get(entity_id=item_id)
+    def test_quantity_without_unit(self, py_wb, item, prop_quantity):
         quantity = py_wb.Quantity().create(123)
-        claims = item.claims.add(quantity_prop, quantity)
+        claims = item.claims.add(prop_quantity, quantity)
         assert quantity.marshal() in [claim.value.marshal() for claim in claims.to_list()]
 
-    def test_quantity_with_unit(self, py_wb, item_id, quantity_prop, quantity_unit_item):
-        item = py_wb.Item().get(entity_id=item_id)
-        quantity = py_wb.Quantity().create(.5, unit=quantity_unit_item)
-        claims = item.claims.add(quantity_prop, quantity)
+    def test_quantity_with_unit(self, py_wb, item, prop_quantity, item_unit):
+        quantity = py_wb.Quantity().create(.5, unit=item_unit)
+        claims = item.claims.add(prop_quantity, quantity)
         assert quantity.marshal() in [claim.value.marshal() for claim in claims.to_list()]

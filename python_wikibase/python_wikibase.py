@@ -1,6 +1,18 @@
 from wikibase_api import Wikibase as WikibaseApi
 
-from .data_model import Aliases, Claim, Claims, Description, Item, Label, Property
+from .data_model import (
+    Aliases,
+    Claim,
+    Claims,
+    Description,
+    Item,
+    Label,
+    Property,
+    Qualifier,
+    Qualifiers,
+    Reference,
+    References,
+)
 from .data_types import ExternalId, GeoLocation, Quantity
 
 DEFAULT_CONFIG = {
@@ -58,6 +70,18 @@ class PyWikibase:
 
     def Property(self):
         return Property(self, self.api, self.language)
+
+    def Qualifier(self):
+        return Qualifier(self, self.api, self.language)
+
+    def Qualifiers(self):
+        return Qualifiers(self, self.api, self.language)
+
+    def Reference(self):
+        return Reference(self, self.api, self.language)
+
+    def References(self):
+        return References(self, self.api, self.language)
 
     # Data types
 

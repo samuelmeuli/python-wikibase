@@ -1,33 +1,29 @@
-from .conftest import LANGUAGE, SAMPLE_ITEM_LABEL, SAMPLE_ITEM_LABEL_2, SAMPLE_PROPERTY_LABEL
-
-ITEM_DESC = "Item description"
-ITEM_ALIAS = "Item alias"
-PROP_DESC = "Property description"
-PROP_ALIAS = "Property alias"
+from tests.constants import LANGUAGE, ITEM_ALIAS, ITEM_DESC, ITEM_LABEL, ITEM_LABEL_2, PROP_LABEL
 
 
-def test_item(py_wb, item_id):
-    item = py_wb.Item().get(entity_id=item_id)
-    assert item.entity_id == item_id
-    assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL
+class TestEntity:
+    def test_item(self, py_wb, item):
+        # Get item
+        item_fetched = py_wb.Item().get(entity_id=item.entity_id)
+        assert item_fetched.entity_id == item.entity_id
+        assert item_fetched.label.get(LANGUAGE) == ITEM_LABEL
 
-    # Update item label
-    item.label.set(SAMPLE_ITEM_LABEL_2)
-    assert item.label.get(LANGUAGE) == SAMPLE_ITEM_LABEL_2
+        # Update item label
+        item_fetched.label.set(ITEM_LABEL_2)
+        assert item_fetched.label.get(LANGUAGE) == ITEM_LABEL_2
 
-    # Update item description
-    item.description.set(ITEM_DESC)
-    assert item.description.get() == ITEM_DESC
+        # Update item description
+        item_fetched.description.set(ITEM_DESC)
+        assert item_fetched.description.get() == ITEM_DESC
 
-    # Update item aliases
-    item.aliases.add(ITEM_ALIAS)
-    assert ITEM_ALIAS in item.aliases.get()
-    item.aliases.remove(ITEM_ALIAS)
-    assert ITEM_ALIAS not in item.aliases.get()
+        # Update item aliases
+        item_fetched.aliases.add(ITEM_ALIAS)
+        assert ITEM_ALIAS in item_fetched.aliases.get()
+        item_fetched.aliases.remove(ITEM_ALIAS)
+        assert ITEM_ALIAS not in item_fetched.aliases.get()
 
-
-def test_property(py_wb, property_id):
-    # Get property
-    prop = py_wb.Property().get(entity_id=property_id)
-    assert prop.entity_id == property_id
-    assert prop.label.get(LANGUAGE) == SAMPLE_PROPERTY_LABEL
+    def test_property(self, py_wb, prop):
+        # Get property
+        prop_fetched = py_wb.Property().get(entity_id=prop.entity_id)
+        assert prop_fetched.entity_id == prop.entity_id
+        assert prop_fetched.label.get(LANGUAGE) == PROP_LABEL
