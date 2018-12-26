@@ -6,15 +6,15 @@ class TestClaim:
     # String
 
     def test_string(self, item, prop):
-        claims = item.claims.add(prop, CLAIM_STR)
-        assert CLAIM_STR in [claim.value for claim in claims.to_list()]
+        claim = item.claims.add(prop, CLAIM_STR)
+        assert claim.value == CLAIM_STR
 
     # ExternalId
 
     def test_external_id(self, py_wb, item, prop_external_id):
         external_id = py_wb.ExternalId().create("ID123")
-        claims = item.claims.add(prop_external_id, external_id)
-        assert external_id.marshal() in [claim.value.marshal() for claim in claims.to_list()]
+        claim = item.claims.add(prop_external_id, external_id)
+        assert claim.value.marshal() == external_id.marshal()
 
     # GeoLocation
 
@@ -25,17 +25,17 @@ class TestClaim:
             precision=0.1,
             globe="http://www.wikidata.org/entity/Q2"
         )
-        claims = item.claims.add(prop_geo_location, geo_location)
-        assert geo_location.marshal() in [claim.value.marshal() for claim in claims.to_list()]
+        claim = item.claims.add(prop_geo_location, geo_location)
+        assert claim.value.marshal() == geo_location.marshal()
 
     # Quantity
 
     def test_quantity_without_unit(self, py_wb, item, prop_quantity):
         quantity = py_wb.Quantity().create(123)
-        claims = item.claims.add(prop_quantity, quantity)
-        assert quantity.marshal() in [claim.value.marshal() for claim in claims.to_list()]
+        claim = item.claims.add(prop_quantity, quantity)
+        assert claim.value.marshal() == quantity.marshal()
 
     def test_quantity_with_unit(self, py_wb, item, prop_quantity, item_unit):
         quantity = py_wb.Quantity().create(.5, unit=item_unit)
-        claims = item.claims.add(prop_quantity, quantity)
-        assert quantity.marshal() in [claim.value.marshal() for claim in claims.to_list()]
+        claim = item.claims.add(prop_quantity, quantity)
+        assert claim.value.marshal() == quantity.marshal()

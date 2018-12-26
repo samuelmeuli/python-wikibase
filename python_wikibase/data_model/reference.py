@@ -34,8 +34,8 @@ class References(Base):
         :type value: str or DataType
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
-        :return: self
-        :rtype: References
+        :return: New reference
+        :rtype: Reference
         """
         # Parameter validation
         if not isinstance(prop, Property):
@@ -65,7 +65,7 @@ class References(Base):
         # Save reference in local collection
         new_reference = self.py_wb.Reference().unmarshal(self.claim_id, r["reference"])
         self._add_locally(new_reference)
-        return self
+        return new_reference
 
     def unmarshal(self, claim_id, references):
         """Parse API response and fill object with the provided information
@@ -95,8 +95,8 @@ class References(Base):
         :type prop: Property
         :param value: Value of the new reference
         :type value: str or DataType
-        :return: self
-        :rtype: References
+        :return: New reference
+        :rtype: Reference
         """
         return self._create(prop, value, "value")
 
@@ -105,8 +105,8 @@ class References(Base):
 
         :param prop: Property of the new reference
         :type prop: Property
-        :return: self
-        :rtype: References
+        :return: New reference
+        :rtype: Reference
         """
         return self._create(prop, None, "novalue")
 
@@ -115,8 +115,8 @@ class References(Base):
 
         :param prop: Property of the new reference
         :type prop: Property
-        :return: self
-        :rtype: References
+        :return: New reference
+        :rtype: Reference
         """
         return self._create(prop, None, "somevalue")
 

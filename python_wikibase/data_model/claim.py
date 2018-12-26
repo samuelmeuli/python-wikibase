@@ -33,8 +33,8 @@ class Claims(Base):
         :type value: str or DataType
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
-        :return: self
-        :rtype: Claims
+        :return: New claim
+        :rtype: Claim
         """
         # Parameter validation
         if not isinstance(prop, Property):
@@ -59,7 +59,7 @@ class Claims(Base):
         # Save claim in local collection
         new_claim = self.py_wb.Claim().unmarshal(self.item_id, r["claim"])
         self._add_locally(new_claim)
-        return self
+        return new_claim
 
     def unmarshal(self, item_id, claims):
         """Parse API response and fill object with the provided information
@@ -90,8 +90,8 @@ class Claims(Base):
         :type prop: Property
         :param value: Value of the new claim
         :type value: str or DataType
-        :return: self
-        :rtype: Claims
+        :return: New claim
+        :rtype: Claim
         """
         return self._create(prop, value, "value")
 
@@ -100,8 +100,8 @@ class Claims(Base):
 
         :param prop: Property of the new claim
         :type prop: Property
-        :return: self
-        :rtype: Claims
+        :return: New claim
+        :rtype: Claim
         """
         return self._create(prop, None, "novalue")
 
@@ -110,8 +110,8 @@ class Claims(Base):
 
         :param prop: Property of the new claim
         :type prop: Property
-        :return: self
-        :rtype: Claims
+        :return: New claim
+        :rtype: Claim
         """
         return self._create(prop, None, "somevalue")
 

@@ -113,8 +113,7 @@ def claim(py_wb, prop):
     assert item.label.get(LANGUAGE) == ITEM_WITH_CLAIM_LABEL
 
     # Create claim
-    claims = item.claims.add(prop, CLAIM_STR)
-    claim = claims.to_list()[0]
+    claim = item.claims.add(prop, CLAIM_STR)
     assert claim.value == CLAIM_STR
 
     # Pass claim to test function and wait for it to finish

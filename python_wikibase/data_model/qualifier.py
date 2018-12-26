@@ -58,8 +58,10 @@ class Qualifiers(Base):
 
         # Update local qualifier collection
         qualifiers = r["claim"]["qualifiers"]
-        self.unmarshal(self.claim_id, qualifiers)
-        return self
+        new_qualifier_dict = qualifiers[prop.entity_id][-1]
+        new_qualifier = self.py_wb.Qualifier().unmarshal(self.claim_id, new_qualifier_dict)
+        self._add_locally(new_qualifier)
+        return new_qualifier
 
     def unmarshal(self, claim_id, qualifiers):
         """Parse API response and fill object with the provided information
