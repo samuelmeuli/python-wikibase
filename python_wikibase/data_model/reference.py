@@ -1,9 +1,9 @@
 from wikibase_api import ApiError
 
-from python_wikibase.utils.property_types import property_types
 from ..base import Base
 from ..data_model.entity import Property
 from ..data_types.data_type import marshal_data_type, unmarshal_data_value
+from ..utils.data_types import class_to_data_type
 from ..utils.exceptions import EditError
 
 
@@ -49,7 +49,7 @@ class References(Base):
                 data_type_marshalled = marshal_data_type(value)
                 value_class = value.__class__.__name__
                 value_marshalled = {
-                    "type": property_types[value_class],
+                    "type": class_to_data_type[value_class],
                     "value": data_type_marshalled,
                 }
                 r = self.py_wb.api.reference.add(

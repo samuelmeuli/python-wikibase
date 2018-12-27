@@ -2,7 +2,7 @@ from wikibase_api import ApiError
 
 from ..base import Base
 from ..utils.exceptions import EditError, NotFoundError, SearchError
-from ..utils.property_types import property_types
+from ..utils.data_types import class_to_data_type, data_type_to_class
 
 
 class Entity(Base):
@@ -22,6 +22,7 @@ class Entity(Base):
         self.description = None
         self.aliases = None
         self.claims = None
+        self.data_type = None  # Only applies to Property
 
         super().__init__(py_wb, api, language)
 
@@ -87,6 +88,10 @@ class Entity(Base):
         self.entity_id = entity["id"]
         self.label = self.py_wb.Label().unmarshal(self.entity_id, entity["labels"])
 
+        # Save data_type
+        if self.entity_type == "property":
+            self.data_type = data_type_to_class[entity["datatype"]]
+
         # Save other attributes
         self.description = self.py_wb.Description().unmarshal(
             self.entity_id, entity["descriptions"]
@@ -121,14 +126,15 @@ class Property(Entity):
     def __init__(self, py_wb, wb, language):
         super().__init__(py_wb, wb, language, "property")
 
-    def create(self, label, property_type="str"):
-        if property_type not in property_types.keys():
+    def create(self, label, data_type="str"):
+        if data_type not in class_to_data_type.keys():
             raise ValueError(
-                f'"{property_type}" is not a valid property_type, must be one of must be one of '
-                f"{property_types.keys()}"
+                f'"{data_type}" is not a valid value for data_type, must be one of must be one of '
+                f"{class_to_data_type.keys()}"
             )
+        self.data_type = data_type
         content = {
             "labels": {self.language: {"language": self.language, "value": label}},
-            "datatype": property_types[property_type],
+            "datatype": class_to_data_type[data_type],
         }
         return super()._create(content)

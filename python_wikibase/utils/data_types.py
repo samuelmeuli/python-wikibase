@@ -1,4 +1,4 @@
-property_types = {
+class_to_data_type = {
     "CommonsMedia": "commonsMedia",
     "ExternalId": "external-id",
     "Form": "wikibase-form",
@@ -15,3 +15,9 @@ property_types = {
     "Time": "time",
     "Url": "url",
 }
+
+data_type_to_class = {}
+
+# Populate data_type_to_class
+for class_name, data_type in class_to_data_type.items():
+    data_type_to_class[data_type] = class_name

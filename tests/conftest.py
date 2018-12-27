@@ -80,7 +80,7 @@ def prop(py_wb):
 
 @pytest.fixture(scope="function")
 def prop_external_id(py_wb):
-    prop = py_wb.Property().create(PROP_EXTERNAL_ID_LABEL, property_type="ExternalId")
+    prop = py_wb.Property().create(PROP_EXTERNAL_ID_LABEL, data_type="ExternalId")
     assert prop.label.get(LANGUAGE) == PROP_EXTERNAL_ID_LABEL
     yield prop
     prop.delete()
@@ -88,7 +88,7 @@ def prop_external_id(py_wb):
 
 @pytest.fixture(scope="function")
 def prop_item(py_wb):
-    prop = py_wb.Property().create(PROP_ITEM_LABEL, property_type="Item")
+    prop = py_wb.Property().create(PROP_ITEM_LABEL, data_type="Item")
     assert prop.label.get(LANGUAGE) == PROP_ITEM_LABEL
     yield prop
     prop.delete()
@@ -96,7 +96,7 @@ def prop_item(py_wb):
 
 @pytest.fixture(scope="function")
 def prop_geo_location(py_wb):
-    prop = py_wb.Property().create(PROP_GEO_LOCATION_LABEL, property_type="GeoLocation")
+    prop = py_wb.Property().create(PROP_GEO_LOCATION_LABEL, data_type="GeoLocation")
     assert prop.label.get(LANGUAGE) == PROP_GEO_LOCATION_LABEL
     yield prop
     prop.delete()
@@ -104,7 +104,7 @@ def prop_geo_location(py_wb):
 
 @pytest.fixture(scope="function")
 def prop_quantity(py_wb):
-    prop = py_wb.Property().create(PROP_QUANTITY_LABEL, property_type="Quantity")
+    prop = py_wb.Property().create(PROP_QUANTITY_LABEL, data_type="Quantity")
     assert prop.label.get(LANGUAGE) == PROP_QUANTITY_LABEL
     yield prop
     prop.delete()
