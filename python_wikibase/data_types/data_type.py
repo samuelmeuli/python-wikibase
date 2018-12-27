@@ -10,8 +10,10 @@ def unmarshal_data_value(py_wb, main_snak):
     if snak_type != "value":
         return None
 
-    # Parse and return data type if snak type is "value"
-    data_type = main_snak["datatype"]
+    if "datatype" in main_snak:
+        data_type = main_snak["datatype"]
+    else:
+        data_type = "string"
     data_value = main_snak["datavalue"]
 
     # Primitive data types
