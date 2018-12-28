@@ -3,7 +3,7 @@
 set -e  # Exit on subsequent errors
 
 # Black (exit with 1 if files were reformatted)
-make format --check || (
+make format BLACK_FLAGS="--check" || (
 	make format &&
 		echo "Python files have been reformatted. Please re-stage and commit your files." &&
 		exit 1
