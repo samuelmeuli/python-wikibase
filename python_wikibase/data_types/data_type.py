@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from ..base import Base
-from ..data_model.entity import Item, Property
+from ..data_model.entity import Entity
 
 
 def unmarshal_data_value(py_wb, main_snak):
@@ -61,21 +61,14 @@ def unmarshal_data_value(py_wb, main_snak):
 
 
 def marshal_data_type(value):
-    # Primitive data types
     if type(value) == str:
+        # String
         return value
-
-    # DataType
-    elif isinstance(value, DataType):
+    elif isinstance(value, Entity) or isinstance(value, DataType):
+        # Item, Property, or DataType
         return value.marshal()
-
-    # Other
-    elif isinstance(value, Item):
-        return {"entity-type": "item", "numeric-id": int(value.entity_id[1:])}
-    elif isinstance(value, Property):
-        return {"entity-type": "property", "numeric-id": int(value.entity_id[1:])}
-
     else:
+        # Other
         raise TypeError("Value must be a string, Item, Property, or a subclass of DataType")
 
 
