@@ -46,13 +46,11 @@ class Claims(Base):
         try:
             if value:
                 value_marshalled = marshal_data_type(value)
-                r = self.py_wb.api.claim.add(
+                r = self.api.claim.add(
                     self.item_id, prop.entity_id, value_marshalled, snak_type=snak_type
                 )
             else:
-                r = self.py_wb.api.claim.add(
-                    self.item_id, prop.entity_id, None, snak_type=snak_type
-                )
+                r = self.api.claim.add(self.item_id, prop.entity_id, None, snak_type=snak_type)
         except ApiError as e:
             raise EditError(f"Could not create claim: {e}") from None
 
@@ -131,7 +129,7 @@ class Claims(Base):
 
         # Delete claim using API
         try:
-            self.py_wb.api.claim.remove(claim.claim_id)
+            self.api.claim.remove(claim.claim_id)
         except ApiError as e:
             raise EditError(f"Could not remove claim: {e}") from None
 

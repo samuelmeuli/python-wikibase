@@ -46,13 +46,11 @@ class Qualifiers(Base):
         try:
             if value:
                 value_marshalled = marshal_data_type(value)
-                r = self.py_wb.api.qualifier.add(
+                r = self.api.qualifier.add(
                     self.claim_id, prop.entity_id, value_marshalled, snak_type=snak_type
                 )
             else:
-                r = self.py_wb.api.qualifier.add(
-                    self.claim_id, prop.entity_id, None, snak_type=snak_type
-                )
+                r = self.api.qualifier.add(self.claim_id, prop.entity_id, None, snak_type=snak_type)
         except ApiError as e:
             raise EditError(f"Could not create qualifier: {e}") from None
 
@@ -135,7 +133,7 @@ class Qualifiers(Base):
 
         # Delete qualifier using API
         try:
-            self.py_wb.api.qualifier.remove(qualifier.claim_id, qualifier.qualifier_id)
+            self.api.qualifier.remove(qualifier.claim_id, qualifier.qualifier_id)
         except ApiError as e:
             raise EditError(f"Could not remove qualifier: {e}") from None
 

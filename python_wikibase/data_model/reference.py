@@ -52,13 +52,11 @@ class References(Base):
                     "type": class_to_data_type[value_class],
                     "value": data_type_marshalled,
                 }
-                r = self.py_wb.api.reference.add(
+                r = self.api.reference.add(
                     self.claim_id, prop.entity_id, value_marshalled, snak_type=snak_type
                 )
             else:
-                r = self.py_wb.api.reference.add(
-                    self.claim_id, prop.entity_id, None, snak_type=snak_type
-                )
+                r = self.api.reference.add(self.claim_id, prop.entity_id, None, snak_type=snak_type)
         except ApiError as e:
             raise EditError(f"Could not create reference: {e}") from None
 
@@ -137,7 +135,7 @@ class References(Base):
 
         # Delete reference using API
         try:
-            self.py_wb.api.reference.remove(reference.claim_id, reference.reference_id)
+            self.api.reference.remove(reference.claim_id, reference.reference_id)
         except ApiError as e:
             raise EditError(f"Could not remove reference: {e}") from None
 
