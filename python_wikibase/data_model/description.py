@@ -31,7 +31,8 @@ class Description(Base):
         """
         if not language:
             language = self.language
-
+        if language not in self.descriptions:
+            return None
         return self.descriptions[language]
 
     def set(self, new_description, language=None):

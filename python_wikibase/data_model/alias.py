@@ -26,6 +26,8 @@ class Aliases(Base):
         """
         if not language:
             language = self.language
+        if language not in self.aliases:
+            return []
         return self.aliases[language]
 
     def add(self, alias, language=None):

@@ -26,6 +26,8 @@ class Label(Base):
         """
         if not language:
             language = self.language
+        if language not in self.labels:
+            return None
         return self.labels[language]
 
     def set(self, new_label, language=None):
