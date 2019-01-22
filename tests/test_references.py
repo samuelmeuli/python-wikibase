@@ -8,6 +8,18 @@ from tests.constants import REFERENCE_STR
 
 class TestReference:
 
+    # No value
+
+    def test_no_value(self, claim, prop):
+        reference = claim.references.add_no_value(prop)
+        assert reference.value is None
+
+    # Some value
+
+    def test_some_value(self, claim, prop):
+        reference = claim.references.add_some_value(prop)
+        assert reference.value is None
+
     # String
 
     def test_string(self, claim, prop):

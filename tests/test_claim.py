@@ -3,6 +3,18 @@ from tests.constants import CLAIM_STR
 
 class TestClaim:
 
+    # No value
+
+    def test_no_value(self, item, prop):
+        claim = item.claims.add_no_value(prop)
+        assert claim.value is None
+
+    # Some value
+
+    def test_some_value(self, item, prop):
+        claim = item.claims.add_some_value(prop)
+        assert claim.value is None
+
     # String
 
     def test_string(self, item, prop):

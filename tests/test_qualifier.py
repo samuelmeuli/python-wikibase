@@ -3,6 +3,18 @@ from tests.constants import QUALIFIER_STR
 
 class TestQualifier:
 
+    # No value
+
+    def test_no_value(self, claim, prop):
+        qualifier = claim.qualifiers.add_no_value(prop)
+        assert qualifier.value is None
+
+    # Some value
+
+    def test_some_value(self, claim, prop):
+        qualifier = claim.qualifiers.add_some_value(prop)
+        assert qualifier.value is None
+
     # String
 
     def test_string(self, claim, prop):
