@@ -196,3 +196,36 @@ class Qualifier(Base):
         if self.snak_type == "value":
             self.value = unmarshal_data_value(self.py_wb, qualifier_data)
         return self
+
+    def set_value(self, value):
+        try:
+            value_marshalled = marshal_data_type(value)
+            self.api.qualifier.update(
+                self.claim_id,
+                self.qualifier_id,
+                self.property.entity_id,
+                value_marshalled,
+                snak_type="value",
+            )
+        except ApiError as e:
+            raise EditError(f"Could not update qualifier value: {e}") from None
+
+    def set_no_value(self):
+        try:
+            self.api.qualifier.update(
+                self.claim_id, self.qualifier_id, self.property.entity_id, None, snak_type="novalue"
+            )
+        except ApiError as e:
+            raise EditError(f"Could not update qualifier value: {e}") from None
+
+    def set_some_value(self):
+        try:
+            self.api.qualifier.update(
+                self.claim_id,
+                self.qualifier_id,
+                self.property.entity_id,
+                None,
+                snak_type="somevalue",
+            )
+        except ApiError as e:
+            raise EditError(f"Could not update qualifier value: {e}") from None
