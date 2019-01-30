@@ -1,8 +1,8 @@
 from wikibase_api import ApiError
 
 from ..base import Base
-from ..data_model.entity import Property
-from ..data_types.data_type import marshal_data_type, unmarshal_data_value
+from ..data_model.entity import check_prop_param
+from ..data_types.data_type import check_value_param, marshal_data_type, unmarshal_data_value
 from ..utils.data_types import class_to_data_type
 from ..utils.exceptions import EditError
 
@@ -31,18 +31,12 @@ class References(Base):
         :param prop: Property of the new reference
         :type prop: Property
         :param value: Value of the new reference
-        :type value: str or DataType
+        :type value: str | DataType | Entity
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
         :return: New reference
         :rtype: Reference
         """
-        # Parameter validation
-        if not isinstance(prop, Property):
-            raise ValueError(
-                f'Could not add reference: "prop" parameter must be instance of Property class'
-            )
-
         # Create reference using API
         try:
             if value:
@@ -92,10 +86,12 @@ class References(Base):
         :param prop: Property of the new reference
         :type prop: Property
         :param value: Value of the new reference
-        :type value: str or DataType
+        :type value: str | DataType | Entity
         :return: New reference
         :rtype: Reference
         """
+        check_prop_param(prop)
+        check_value_param(value)
         return self._create(prop, value, "value")
 
     def add_no_value(self, prop):
@@ -106,6 +102,7 @@ class References(Base):
         :return: New reference
         :rtype: Reference
         """
+        check_prop_param(prop)
         return self._create(prop, None, "novalue")
 
     def add_some_value(self, prop):
@@ -116,6 +113,7 @@ class References(Base):
         :return: New reference
         :rtype: Reference
         """
+        check_prop_param(prop)
         return self._create(prop, None, "somevalue")
 
     def remove(self, reference):
@@ -126,12 +124,7 @@ class References(Base):
         :return: self
         :rtype: References
         """
-        # Parameter validation
-        if not isinstance(reference, Reference):
-            raise ValueError(
-                f'Could not remove reference: "reference" parameter must be instance of Reference '
-                f"class"
-            )
+        check_reference_param(reference)
 
         # Delete reference using API
         try:
@@ -203,6 +196,7 @@ class Reference(Base):
         return self
 
     def set_value(self, value):
+        check_value_param(value)
         try:
             value_marshalled = marshal_data_type(value)
             self.api.reference.update(
@@ -234,3 +228,8 @@ class Reference(Base):
             )
         except ApiError as e:
             raise EditError(f"Could not update reference value: {e}") from None
+
+
+def check_reference_param(prop, param_name="reference"):
+    if not isinstance(prop, Reference):
+        raise ValueError(f"{param_name} parameter must be instance of Reference class")

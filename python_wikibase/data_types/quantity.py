@@ -1,5 +1,5 @@
 from .data_type import DataType
-from ..data_model.entity import Item
+from ..data_model.entity import check_item_param
 
 
 class Quantity(DataType):
@@ -47,8 +47,8 @@ class Quantity(DataType):
         return marshalled
 
     def create(self, amount, unit=None):
-        if unit and not isinstance(unit, Item):
-            raise ValueError(f'Could not create Quantity: "unit" must be instance of Item')
+        if unit:
+            check_item_param(unit, "unit")
 
         self.amount = amount
         self.unit = unit

@@ -61,15 +61,13 @@ def unmarshal_data_value(py_wb, main_snak):
 
 
 def marshal_data_type(value):
+    check_value_param(value)
     if type(value) == str:
         # String
         return value
-    elif isinstance(value, Entity) or isinstance(value, DataType):
+    else:
         # Item, Property, or DataType
         return value.marshal()
-    else:
-        # Other
-        raise TypeError("Value must be a string, Item, Property, or a subclass of DataType")
 
 
 class DataType(Base):
@@ -87,3 +85,10 @@ class DataType(Base):
     @abstractmethod
     def create(self, *args, **kwargs):
         pass
+
+
+def check_value_param(value, param_name="value"):
+    if not isinstance(value, (str, Entity, DataType)):
+        raise ValueError(
+            f'"{param_name}" parameter must be string or instance of Entity or DataType class'
+        )

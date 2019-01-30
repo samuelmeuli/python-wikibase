@@ -1,8 +1,8 @@
 from wikibase_api import ApiError
 
 from ..base import Base
-from ..data_model.entity import Property
-from ..data_types.data_type import marshal_data_type, unmarshal_data_value
+from ..data_model.entity import check_prop_param
+from ..data_types.data_type import check_value_param, marshal_data_type, unmarshal_data_value
 from ..utils.exceptions import EditError
 
 
@@ -30,18 +30,12 @@ class Claims(Base):
         :param prop: Property of the new claim
         :type prop: Property
         :param value: Value of the new claim
-        :type value: str or DataType
+        :type value: str | DataType | Entity
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
         :return: New claim
         :rtype: Claim
         """
-        # Parameter validation
-        if not isinstance(prop, Property):
-            raise ValueError(
-                f'Could not add claim: "prop" parameter must be instance of Property class'
-            )
-
         # Create claim using API
         try:
             if value:
@@ -87,10 +81,12 @@ class Claims(Base):
         :param prop: Property of the new claim
         :type prop: Property
         :param value: Value of the new claim
-        :type value: str or DataType
+        :type value: str | DataType | Entity
         :return: New claim
         :rtype: Claim
         """
+        check_prop_param(prop)
+        check_value_param(value)
         return self._create(prop, value, "value")
 
     def add_no_value(self, prop):
@@ -101,6 +97,7 @@ class Claims(Base):
         :return: New claim
         :rtype: Claim
         """
+        check_prop_param(prop)
         return self._create(prop, None, "novalue")
 
     def add_some_value(self, prop):
@@ -111,6 +108,7 @@ class Claims(Base):
         :return: New claim
         :rtype: Claim
         """
+        check_prop_param(prop)
         return self._create(prop, None, "somevalue")
 
     def remove(self, claim):
@@ -121,11 +119,7 @@ class Claims(Base):
         :return: self
         :rtype: Claims
         """
-        # Parameter validation
-        if not isinstance(claim, Claim):
-            raise ValueError(
-                f'Could not remove claim: "claim" parameter must be instance of Claim class'
-            )
+        check_claim_param(claim)
 
         # Delete claim using API
         try:
@@ -213,6 +207,7 @@ class Claim(Base):
         return self
 
     def set_value(self, value):
+        check_value_param(value)
         try:
             value_marshalled = marshal_data_type(value)
             self.api.claim.update(self.claim_id, value_marshalled, snak_type="value")
@@ -230,3 +225,8 @@ class Claim(Base):
             self.api.claim.update(self.claim_id, None, snak_type="somevalue")
         except ApiError as e:
             raise EditError(f"Could not update claim value: {e}") from None
+
+
+def check_claim_param(prop, param_name="claim"):
+    if not isinstance(prop, Claim):
+        raise ValueError(f"{param_name} parameter must be instance of Claim class")

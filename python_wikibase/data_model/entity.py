@@ -141,3 +141,13 @@ class Property(Entity):
             "datatype": class_to_data_type[data_type],
         }
         return super()._create(content)
+
+
+def check_item_param(prop, param_name="item"):
+    if not isinstance(prop, Item):
+        raise ValueError(f"{param_name} parameter must be instance of Item class")
+
+
+def check_prop_param(prop, param_name="property"):
+    if not isinstance(prop, Property):
+        raise ValueError(f"{param_name} parameter must be instance of Property class")
