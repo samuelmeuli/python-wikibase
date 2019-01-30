@@ -19,7 +19,7 @@ class Label(Base):
     def get(self, language=None):
         """Get the entity's label in the specified language (or use the entity's default)
 
-        :param language: Language to get the label in
+        :param language: Language to get the label for
         :type language: str
         :return: Label
         :rtype: str
@@ -30,11 +30,11 @@ class Label(Base):
             return None
         return self.labels[language]
 
-    def set(self, new_label, language=None):
+    def set(self, label, language=None):
         """Update the entity's label in the specified language (or the entity's default)
 
-        :param new_label: New label to use
-        :type new_label: str
+        :param label: Label to replace the current one with
+        :type label: str
         :param language: Language to update the label for
         :type language: str
         """
@@ -42,7 +42,7 @@ class Label(Base):
             language = self.language
 
         try:
-            r = self.api.label.set(self.item_id, new_label, language)
+            r = self.api.label.set(self.item_id, label, language)
             self.labels[language] = r["entity"]["labels"][language]["value"]
         except ApiError as e:
             raise EditError(f"Could not update label: {e}") from None

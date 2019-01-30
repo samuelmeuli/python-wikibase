@@ -1,4 +1,4 @@
-from tests.constants import LANGUAGE, ITEM_ALIAS, ITEM_DESC, ITEM_LABEL, ITEM_LABEL_2, PROP_LABEL
+from tests.constants import ITEM_ALIAS, ITEM_DESC, ITEM_LABEL, ITEM_LABEL_2, LANGUAGE, PROP_LABEL
 
 
 class TestEntity:

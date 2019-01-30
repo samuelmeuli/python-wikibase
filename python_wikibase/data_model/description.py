@@ -18,13 +18,10 @@ class Description(Base):
             self.descriptions[lang] = lang_value["value"]
         return self
 
-    def __repr__(self):
-        return repr(self.descriptions)
-
     def get(self, language=None):
         """Get the entity's description in the specified language (or use the entity's default)
 
-        :param language: Language to get the description in
+        :param language: Language to get the description for
         :type language: str
         :return: Description
         :rtype: str
@@ -35,11 +32,11 @@ class Description(Base):
             return None
         return self.descriptions[language]
 
-    def set(self, new_description, language=None):
+    def set(self, description, language=None):
         """Update the entity's description in the specified language (or the entity's default)
 
-        :param new_description: New description to use
-        :type new_description: str
+        :param description: Description to replace the current one with
+        :type description: str
         :param language: Language to update the description for
         :type language: str
         """
@@ -47,7 +44,7 @@ class Description(Base):
             language = self.language
 
         try:
-            r = self.api.description.set(self.item_id, new_description, language)
+            r = self.api.description.set(self.item_id, description, language)
             self.descriptions[language] = r["entity"]["descriptions"][language]["value"]
         except ApiError as e:
             r_dict = json.loads(str(e))
@@ -60,4 +57,4 @@ class Description(Base):
                     "Another entity with the same label and description already exists"
                 ) from None
             else:
-                raise EditError("Could not update description: " + e) from None
+                raise EditError(f"Could not update description: {e}") from None

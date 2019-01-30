@@ -10,9 +10,9 @@ from tests.constants import (
     LANGUAGE,
     PROP_EXTERNAL_ID_LABEL,
     PROP_GEO_LOCATION_LABEL,
+    PROP_ITEM_LABEL,
     PROP_LABEL,
     PROP_QUANTITY_LABEL,
-    PROP_ITEM_LABEL
 )
 
 current_dir = os.path.dirname(os.path.realpath(__file__))

@@ -19,7 +19,7 @@ class Aliases(Base):
     def get(self, language=None):
         """Get the entity's aliases in the specified language (or use the entity's default)
 
-        :param language: Language to get the aliases in
+        :param language: Language to get the aliases for
         :type language: str
         :return: Aliases
         :rtype: list(str)
@@ -33,7 +33,7 @@ class Aliases(Base):
     def add(self, alias, language=None):
         """Add a new alias in the specified language (or the entity's default)
 
-        :param alias: New alias
+        :param alias: Alias to add
         :type alias: str
         :param language: Language of the alias to add
         :type language: str

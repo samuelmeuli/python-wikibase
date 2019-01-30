@@ -1,8 +1,8 @@
 from wikibase_api import ApiError
 
 from ..base import Base
-from ..utils.exceptions import EditError, NotFoundError, SearchError
 from ..utils.data_types import class_to_data_type, data_type_to_class
+from ..utils.exceptions import EditError, NotFoundError, SearchError
 
 
 class Entity(Base):
