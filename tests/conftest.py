@@ -4,7 +4,6 @@ import pytest
 
 from python_wikibase import PyWikibase
 from tests.constants import (
-    CLAIM_STR,
     ITEM_LABEL,
     ITEM_WITH_CLAIM_LABEL,
     LANGUAGE,
@@ -13,6 +12,7 @@ from tests.constants import (
     PROP_ITEM_LABEL,
     PROP_LABEL,
     PROP_QUANTITY_LABEL,
+    STRING_VALUE,
 )
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -110,11 +110,20 @@ def prop_quantity(py_wb):
     prop.delete()
 
 
+# Values
+
+@pytest.fixture(scope="function")
+def string_value(py_wb):
+    string_value = py_wb.StringValue().create(STRING_VALUE)
+    assert str(string_value.value) == str(STRING_VALUE)
+    return string_value
+
+
 # Claims
 
 
 @pytest.fixture(scope="function")
-def claim(py_wb, prop):
+def claim(py_wb, prop, string_value):
     """Create a new Wikibase item with a string claim, pass the claim to the test function, and
     delete the item after running the test"""
     # Create item
@@ -122,8 +131,8 @@ def claim(py_wb, prop):
     assert item.label.get(LANGUAGE) == ITEM_WITH_CLAIM_LABEL
 
     # Create claim
-    claim = item.claims.add(prop, CLAIM_STR)
-    assert claim.value == CLAIM_STR
+    claim = item.claims.add(prop, string_value)
+    assert str(claim.value) == str(string_value)
 
     # Pass claim to test function and wait for it to finish
     yield claim

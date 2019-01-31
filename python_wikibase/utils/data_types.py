@@ -10,7 +10,7 @@ class_to_data_type = {
     "Property": "wikibase-property",
     "Quantity": "quantity",
     "Sense": "wikibase-sense",
-    "str": "string",
+    "StringValue": "string",
     "Table": "tabular-data",
     "Time": "time",
     "Url": "url",

@@ -30,7 +30,7 @@ class Claims(Base):
         :param prop: Property of the new claim
         :type prop: Property
         :param value: Value of the new claim
-        :type value: str | DataType | Entity
+        :type value: Value
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
         :return: New claim
@@ -81,7 +81,7 @@ class Claims(Base):
         :param prop: Property of the new claim
         :type prop: Property
         :param value: Value of the new claim
-        :type value: str | DataType | Entity
+        :type value: Value
         :return: New claim
         :rtype: Claim
         """

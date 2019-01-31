@@ -13,7 +13,7 @@ from .data_model import (
     Reference,
     References,
 )
-from .data_types import ExternalId, GeoLocation, Quantity
+from .data_types import ExternalId, GeoLocation, Quantity, StringValue
 
 DEFAULT_CONFIG = {
     "api_url": "https://www.wikidata.org/w/api.php",
@@ -93,3 +93,6 @@ class PyWikibase:
 
     def Quantity(self):
         return Quantity(self, self.api, self.language)
+
+    def StringValue(self):
+        return StringValue(self, self.api, self.language)

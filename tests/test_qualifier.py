@@ -1,6 +1,3 @@
-from tests.constants import QUALIFIER_STR
-
-
 class TestQualifier:
 
     # No value
@@ -17,9 +14,9 @@ class TestQualifier:
 
     # String
 
-    def test_string(self, claim, prop):
-        qualifier = claim.qualifiers.add(prop, QUALIFIER_STR)
-        assert qualifier.value == QUALIFIER_STR
+    def test_string(self, claim, prop, string_value):
+        qualifier = claim.qualifiers.add(prop, string_value)
+        assert str(qualifier.value) == str(string_value)
 
     # Item
 

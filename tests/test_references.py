@@ -1,12 +1,10 @@
-from tests.constants import REFERENCE_STR
-
-
-# The following data types are not supported as reference values by Wikibase:
-# - ExternalId
-# - GeoLocation
-# - Item
-
 class TestReference:
+    """The following data types are not supported as reference values by Wikibase:
+
+    * ExternalId
+    * GeoLocation
+    * Item
+    """
 
     # No value
 
@@ -22,9 +20,9 @@ class TestReference:
 
     # String
 
-    def test_string(self, claim, prop):
-        reference = claim.references.add(prop, REFERENCE_STR)
-        assert reference.value == REFERENCE_STR
+    def test_string(self, claim, prop, string_value):
+        reference = claim.references.add(prop, string_value)
+        assert str(reference.value) == str(string_value)
 
     # Quantity
 

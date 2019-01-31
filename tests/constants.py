@@ -12,8 +12,4 @@ PROP_ITEM_LABEL = "Wikibase item property"
 PROP_GEO_LOCATION_LABEL = "GeoLocation property"
 PROP_QUANTITY_LABEL = "Quantity property"
 
-CLAIM_STR = "Claim value"
-
-QUALIFIER_STR = "Qualifier value"
-
-REFERENCE_STR = "Reference value"
+STRING_VALUE = "String value"

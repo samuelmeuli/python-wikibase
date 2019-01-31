@@ -1,6 +1,3 @@
-from tests.constants import CLAIM_STR
-
-
 class TestClaim:
 
     # No value
@@ -17,9 +14,9 @@ class TestClaim:
 
     # String
 
-    def test_string(self, item, prop):
-        claim = item.claims.add(prop, CLAIM_STR)
-        assert claim.value == CLAIM_STR
+    def test_string(self, item, prop, string_value):
+        claim = item.claims.add(prop, string_value)
+        assert str(claim.value) == str(string_value)
 
     # Item
 

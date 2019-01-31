@@ -31,7 +31,7 @@ class References(Base):
         :param prop: Property of the new reference
         :type prop: Property
         :param value: Value of the new reference
-        :type value: str | DataType | Entity
+        :type value: Value
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
         :return: New reference
@@ -86,7 +86,7 @@ class References(Base):
         :param prop: Property of the new reference
         :type prop: Property
         :param value: Value of the new reference
-        :type value: str | DataType | Entity
+        :type value: Value
         :return: New reference
         :rtype: Reference
         """

@@ -30,7 +30,7 @@ class Qualifiers(Base):
         :param prop: Property of the new qualifier
         :type prop: Property
         :param value: Value of the new qualifier
-        :type value: str | DataType | Entity
+        :type value: Value
         :param snak_type: Value type (one of ``["value", "novalue", "somevalue"]``)
         :type snak_type: str
         :return: self
@@ -84,7 +84,7 @@ class Qualifiers(Base):
         :param prop: Property of the new qualifier
         :type prop: Property
         :param value: Value of the new qualifier
-        :type value: str | DataType | Entity
+        :type value: Value
         :return: self
         :rtype: Qualifiers
         """

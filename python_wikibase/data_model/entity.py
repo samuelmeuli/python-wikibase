@@ -1,11 +1,11 @@
 from wikibase_api import ApiError
 
-from ..base import Base
-from ..utils.data_types import class_to_data_type, data_type_to_class
-from ..utils.exceptions import EditError, NotFoundError, SearchError
+from python_wikibase.utils.data_types import class_to_data_type, data_type_to_class
+from python_wikibase.utils.exceptions import EditError, NotFoundError, SearchError
+from python_wikibase.value import Value
 
 
-class Entity(Base):
+class Entity(Value):
     def __init__(self, py_wb, api, language, entity_type):
         """Wikibase entity (item or property)
 
@@ -129,7 +129,7 @@ class Property(Entity):
     def __init__(self, py_wb, wb, language):
         super().__init__(py_wb, wb, language, "property")
 
-    def create(self, label, data_type="str"):
+    def create(self, label, data_type="StringValue"):
         if data_type not in class_to_data_type.keys():
             raise ValueError(
                 f'"{data_type}" is not a valid value for data_type, must be one of must be one of '
