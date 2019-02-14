@@ -42,7 +42,10 @@ class Quantity(DataType):
         if not self.unit:
             marshalled["unit"] = "1"
         else:
-            marshalled["unit"] = "http://localhost:8181/entity/" + self.unit.entity_id
+            api_url = self.py_wb.api.api.base_url
+            api_url_split = api_url.split("/")
+            base_url = "/".join(api_url_split[:3])
+            marshalled["unit"] = f"{base_url}/entity/{self.unit.entity_id}"
 
         return marshalled
 
