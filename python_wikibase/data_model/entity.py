@@ -78,13 +78,13 @@ class Entity(Value):
             raise SearchError(f"Could not get {self.entity_type}: {e}") from None
         if "success" not in r or r["success"] != 1:
             raise NotFoundError(
-                'No {} found with the entity_id "{}"'.format(self.entity_type, self.entity_id)
+                f'No {self.entity_type} found with the entity_id "{self.entity_id}"'
             )
 
         entity = r["entities"][entity_id]
         if "missing" in entity:
             raise NotFoundError(
-                'No {} found with the entity_id "{}"'.format(self.entity_type, self.entity_id)
+                f'No {self.entity_type} found with the entity_id "{self.entity_id}"'
             )
 
         # Save entity_id and label
