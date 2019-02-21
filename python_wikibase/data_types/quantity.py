@@ -1,5 +1,5 @@
-from .data_type import DataType
-from ..data_model.entity import check_item_param
+from python_wikibase.data_model.entity import check_item_param
+from python_wikibase.data_types.data_type import DataType
 
 
 class Quantity(DataType):

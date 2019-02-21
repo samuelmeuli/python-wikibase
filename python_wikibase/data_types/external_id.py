@@ -1,4 +1,4 @@
-from .data_type import DataType
+from python_wikibase.data_types.data_type import DataType
 
 
 class ExternalId(DataType):

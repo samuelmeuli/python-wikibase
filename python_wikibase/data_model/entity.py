@@ -1,8 +1,7 @@
-from wikibase_api import ApiError
-
 from python_wikibase.utils.data_types import class_to_data_type, data_type_to_class
 from python_wikibase.utils.exceptions import EditError, NotFoundError, SearchError
 from python_wikibase.value import Value
+from wikibase_api import ApiError
 
 
 class Entity(Value):

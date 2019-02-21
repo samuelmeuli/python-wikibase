@@ -1,6 +1,4 @@
-from wikibase_api import Wikibase as WikibaseApi
-
-from .data_model import (
+from python_wikibase.data_model import (
     Aliases,
     Claim,
     Claims,
@@ -13,7 +11,8 @@ from .data_model import (
     Reference,
     References,
 )
-from .data_types import ExternalId, GeoLocation, Quantity, StringValue
+from python_wikibase.data_types import ExternalId, GeoLocation, Quantity, StringValue
+from wikibase_api import Wikibase as WikibaseApi
 
 DEFAULT_CONFIG = {
     "api_url": "https://www.wikidata.org/w/api.php",

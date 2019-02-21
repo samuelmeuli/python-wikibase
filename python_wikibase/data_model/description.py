@@ -1,9 +1,8 @@
 import json
 
+from python_wikibase.base import Base
+from python_wikibase.utils.exceptions import DuplicateError, EditError
 from wikibase_api import ApiError
-
-from ..base import Base
-from ..utils.exceptions import DuplicateError, EditError
 
 
 class Description(Base):

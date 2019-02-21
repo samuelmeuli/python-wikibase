@@ -1,10 +1,10 @@
-from .alias import Aliases
-from .claim import Claim, Claims
-from .description import Description
-from .entity import Item, Property
-from .label import Label
-from .qualifier import Qualifier, Qualifiers
-from .reference import Reference, References
+from python_wikibase.data_model.alias import Aliases
+from python_wikibase.data_model.claim import Claim, Claims
+from python_wikibase.data_model.description import Description
+from python_wikibase.data_model.entity import Item, Property
+from python_wikibase.data_model.label import Label
+from python_wikibase.data_model.qualifier import Qualifier, Qualifiers
+from python_wikibase.data_model.reference import Reference, References
 
 __all__ = [
     "Aliases",
