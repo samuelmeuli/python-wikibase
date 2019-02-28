@@ -47,11 +47,22 @@ class TestQualifier:
     # Quantity
 
     def test_quantity_without_unit(self, py_wb, claim, prop_quantity):
-        quantity = py_wb.Quantity().create(123)
+        amount = 123
+        quantity = py_wb.Quantity().create(amount)
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
+        assert qualifier.value.amount == amount
+        assert qualifier.value.marshal() == quantity.marshal()
+
+    def test_quantity_without_unit_neg(self, py_wb, claim, prop_quantity):
+        amount = -5
+        quantity = py_wb.Quantity().create(amount)
+        qualifier = claim.qualifiers.add(prop_quantity, quantity)
+        assert qualifier.value.amount == amount
         assert qualifier.value.marshal() == quantity.marshal()
 
     def test_quantity_with_unit(self, py_wb, claim, prop_quantity, item_unit):
-        quantity = py_wb.Quantity().create(.5, unit=item_unit)
+        amount = 0.5
+        quantity = py_wb.Quantity().create(amount, unit=item_unit)
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
+        assert qualifier.value.amount == amount
         assert qualifier.value.marshal() == quantity.marshal()

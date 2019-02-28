@@ -3,6 +3,15 @@ from python_wikibase.data_types.data_type import DataType
 
 
 class Quantity(DataType):
+    @staticmethod
+    def parse_number(value):
+        """Parse and return number (string, float or int) as int or float"""
+        value_float = float(value)
+        if value_float.is_integer():
+            return int(value_float)
+        else:
+            return value_float
+
     def __init__(self, py_wb, api, language):
         super().__init__(py_wb, api, language)
         self.amount = None
@@ -12,10 +21,7 @@ class Quantity(DataType):
         quantity_value = data_value["value"]
 
         # Amount (parse as int or float)
-        try:
-            self.amount = int(quantity_value["amount"])
-        except ValueError:
-            self.amount = float(quantity_value["amount"])
+        self.amount = self.parse_number(quantity_value["amount"])
 
         # Unit
         if quantity_value["unit"] == "1":
@@ -36,7 +42,7 @@ class Quantity(DataType):
         if self.amount >= 0:
             marshalled["amount"] = f"+{self.amount}"
         else:
-            marshalled["amount"] = f"-{self.amount}"
+            marshalled["amount"] = str(self.amount)
 
         # Unit
         if not self.unit:
@@ -51,10 +57,7 @@ class Quantity(DataType):
 
     def create(self, amount, unit=None):
         # Amount (parse as int or float)
-        try:
-            self.amount = int(amount)
-        except ValueError:
-            self.amount = float(amount)
+        self.amount = self.parse_number(amount)
 
         # Unit (must be Wikibase item)
         if unit:
