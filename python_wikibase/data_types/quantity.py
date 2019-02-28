@@ -11,7 +11,7 @@ class Quantity(DataType):
     def unmarshal(self, data_value):
         quantity_value = data_value["value"]
 
-        # Amount
+        # Amount (parse as int or float)
         try:
             self.amount = int(quantity_value["amount"])
         except ValueError:
@@ -50,9 +50,15 @@ class Quantity(DataType):
         return marshalled
 
     def create(self, amount, unit=None):
+        # Amount (parse as int or float)
+        try:
+            self.amount = int(amount)
+        except ValueError:
+            self.amount = float(amount)
+
+        # Unit (must be Wikibase item)
         if unit:
             check_item_param(unit, "unit")
-
-        self.amount = amount
         self.unit = unit
+
         return self
