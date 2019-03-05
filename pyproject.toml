@@ -2,10 +2,9 @@
 name = "python-wikibase"
 version = "0.1.0"
 description = "Wikibase queries and edits made easy"
-# TODO license
+license = "Apache-2.0 and GPL-3.0"
 authors = ["Samuel Meuli <me@samuelmeuli.com>"]
 repository = "https://github.com/samuelmeuli/python-wikibase"
-# TODO documentation URL
 keywords = ["wikibase", "wikidata", "bot", "api", "wrapper"]
 classifiers = [
 	"Intended Audience :: Developers",
