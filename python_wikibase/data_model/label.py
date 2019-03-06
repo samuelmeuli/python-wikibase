@@ -1,5 +1,7 @@
+import json
+
 from python_wikibase.base import Base
-from python_wikibase.utils.exceptions import EditError
+from python_wikibase.utils.exceptions import DuplicateError, EditError
 from wikibase_api import ApiError
 
 
@@ -44,4 +46,14 @@ class Label(Base):
             r = self.api.label.set(self.item_id, label, language)
             self.labels[language] = r["entity"]["labels"][language]["value"]
         except ApiError as e:
-            raise EditError(f"Could not update label: {e}") from None
+            r_dict = json.loads(str(e))
+            if (
+                "messages" in r_dict
+                and r_dict["messages"][0]["name"]
+                == "wikibase-validator-label-with-description-conflict"
+            ):
+                raise DuplicateError(
+                    "Another entity with the same label and description already exists"
+                ) from None
+            else:
+                raise EditError(f"Could not set label: {e}") from None
