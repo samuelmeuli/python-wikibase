@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from python_wikibase.value import Value, check_value_param
+from python_wikibase.value import Value
 
 
 class DataType(Value):
@@ -74,6 +74,14 @@ def unmarshal_data_value(py_wb, main_snak):
         raise NotImplementedError(f'No unmarshalling function for data type "{data_type}" defined')
 
 
-def marshal_data_type(value):
-    check_value_param(value)
-    return value.marshal()
+def check_data_type(value, prop):
+    """Check if value is of correct data type
+
+    :param value: Value whose data type shall be checked
+    :type value: Value
+    :param prop: Property whose data type the value shall be compared with
+    :type prop: Property
+    """
+    data_type = value.__class__.__name__
+    if data_type != prop.data_type:
+        raise ValueError(f"Value must be instance of {prop.data_type} class")

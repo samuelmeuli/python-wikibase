@@ -1,10 +1,6 @@
 from python_wikibase.base import Base
 from python_wikibase.data_model.entity import check_prop_param
-from python_wikibase.data_types.data_type import (
-    check_value_param,
-    marshal_data_type,
-    unmarshal_data_value,
-)
+from python_wikibase.data_types.data_type import check_data_type, unmarshal_data_value
 from python_wikibase.utils.exceptions import EditError
 from wikibase_api import ApiError
 
@@ -42,9 +38,8 @@ class Qualifiers(Base):
         # Create qualifier using API
         try:
             if value:
-                value_marshalled = marshal_data_type(value)
                 r = self.api.qualifier.add(
-                    self.claim_id, prop.entity_id, value_marshalled, snak_type=snak_type
+                    self.claim_id, prop.entity_id, value.marshal(), snak_type=snak_type
                 )
             else:
                 r = self.api.qualifier.add(self.claim_id, prop.entity_id, None, snak_type=snak_type)
@@ -92,7 +87,7 @@ class Qualifiers(Base):
         :rtype: Qualifiers
         """
         check_prop_param(prop)
-        check_value_param(value)
+        check_data_type(value, prop)
         return self._create(prop, value, "value")
 
     def add_no_value(self, prop):
@@ -194,14 +189,13 @@ class Qualifier(Base):
         return self
 
     def set_value(self, value):
-        check_value_param(value)
+        check_data_type(value, self.property)
         try:
-            value_marshalled = marshal_data_type(value)
             self.api.qualifier.update(
                 self.claim_id,
                 self.qualifier_id,
                 self.property.entity_id,
-                value_marshalled,
+                value.marshal(),
                 snak_type="value",
             )
         except ApiError as e:

@@ -1,10 +1,6 @@
 from python_wikibase.base import Base
 from python_wikibase.data_model.entity import check_prop_param
-from python_wikibase.data_types.data_type import (
-    check_value_param,
-    marshal_data_type,
-    unmarshal_data_value,
-)
+from python_wikibase.data_types.data_type import check_data_type, unmarshal_data_value
 from python_wikibase.utils.data_types import class_to_data_type
 from python_wikibase.utils.exceptions import EditError
 from wikibase_api import ApiError
@@ -43,11 +39,10 @@ class References(Base):
         # Create reference using API
         try:
             if value:
-                data_type_marshalled = marshal_data_type(value)
                 value_class = value.__class__.__name__
                 value_marshalled = {
                     "type": class_to_data_type[value_class],
-                    "value": data_type_marshalled,
+                    "value": value.marshal(),
                 }
                 r = self.api.reference.add(
                     self.claim_id, prop.entity_id, value_marshalled, snak_type=snak_type
@@ -94,7 +89,7 @@ class References(Base):
         :rtype: Reference
         """
         check_prop_param(prop)
-        check_value_param(value)
+        check_data_type(value, prop)
         return self._create(prop, value, "value")
 
     def add_no_value(self, prop):
@@ -199,14 +194,13 @@ class Reference(Base):
         return self
 
     def set_value(self, value):
-        check_value_param(value)
+        check_data_type(value, self.property)
         try:
-            value_marshalled = marshal_data_type(value)
             self.api.reference.update(
                 self.claim_id,
                 self.property.entity_id,
                 self.reference_id,
-                value_marshalled,
+                value.marshal(),
                 snak_type="value",
             )
         except ApiError as e:

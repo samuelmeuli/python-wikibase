@@ -1,10 +1,6 @@
 from python_wikibase.base import Base
 from python_wikibase.data_model.entity import check_prop_param
-from python_wikibase.data_types.data_type import (
-    check_value_param,
-    marshal_data_type,
-    unmarshal_data_value,
-)
+from python_wikibase.data_types.data_type import check_data_type, unmarshal_data_value
 from python_wikibase.utils.exceptions import EditError
 from wikibase_api import ApiError
 
@@ -42,9 +38,8 @@ class Claims(Base):
         # Create claim using API
         try:
             if value:
-                value_marshalled = marshal_data_type(value)
                 r = self.api.claim.add(
-                    self.item_id, prop.entity_id, value_marshalled, snak_type=snak_type
+                    self.item_id, prop.entity_id, value.marshal(), snak_type=snak_type
                 )
             else:
                 r = self.api.claim.add(self.item_id, prop.entity_id, None, snak_type=snak_type)
@@ -89,7 +84,7 @@ class Claims(Base):
         :rtype: Claim
         """
         check_prop_param(prop)
-        check_value_param(value)
+        check_data_type(value, prop)
         return self._create(prop, value, "value")
 
     def add_no_value(self, prop):
@@ -203,17 +198,18 @@ class Claim(Base):
         else:
             self.references = self.py_wb.References().unmarshal(self.claim_id, {})
 
-        # Parse snak type and value (if snak type is "value")
+        # Parse data type and value (if snak type is "value")
         self.snak_type = main_snak["snaktype"]
         if self.snak_type == "value":
             self.value = unmarshal_data_value(self.py_wb, main_snak)
+            self.property.data_type = self.value.__class__.__name__
+
         return self
 
     def set_value(self, value):
-        check_value_param(value)
+        check_data_type(value, self.property)
         try:
-            value_marshalled = marshal_data_type(value)
-            self.api.claim.update(self.claim_id, value_marshalled, snak_type="value")
+            self.api.claim.update(self.claim_id, value.marshal(), snak_type="value")
         except ApiError as e:
             raise EditError(f"Could not update claim value: {e}") from None
 
