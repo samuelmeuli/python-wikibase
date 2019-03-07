@@ -244,12 +244,11 @@ requests = "^2.20"
 requests-oauthlib = "^1.0"
 
 [package.source]
-reference = ""
-type = "directory"
-url = "../wikibase-api"
-
+reference = "fa975ab8de2d0044eb5d06c7a4909b6d443441de"
+type = "git"
+url = "git@github.com:samuelmeuli/wikibase-api.git"
 [metadata]
-content-hash = "44752e5fca7817880efe3da6d1d5bea16590621b7502df5d63e091ed90244924"
+content-hash = "ea79e86212543a1e0a6e2c6d756447f16770fcc6fcbaae2e42c5761d433d17c0"
 python-versions = "^3.6"
 
 [metadata.hashes]

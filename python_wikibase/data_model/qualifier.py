@@ -1,8 +1,9 @@
+from wikibase_api import ApiError
+
 from python_wikibase.base import Base
 from python_wikibase.data_model.entity import check_prop_param
 from python_wikibase.data_types.data_type import check_data_type, unmarshal_data_value
 from python_wikibase.utils.exceptions import EditError
-from wikibase_api import ApiError
 
 
 class Qualifiers(Base):

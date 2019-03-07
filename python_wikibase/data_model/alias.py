@@ -1,6 +1,7 @@
+from wikibase_api import ApiError
+
 from python_wikibase.base import Base
 from python_wikibase.utils.exceptions import EditError
-from wikibase_api import ApiError
 
 
 class Aliases(Base):
