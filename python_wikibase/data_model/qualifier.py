@@ -187,6 +187,7 @@ class Qualifier(Base):
         self.snak_type = qualifier_data["snaktype"]
         if self.snak_type == "value":
             self.value = unmarshal_data_value(self.py_wb, qualifier_data)
+            self.property.data_type = self.value.__class__.__name__
         return self
 
     def set_value(self, value):
