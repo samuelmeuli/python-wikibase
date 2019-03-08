@@ -16,6 +16,7 @@ class TestQualifier:
 
     def test_string(self, claim, prop, string_value):
         qualifier = claim.qualifiers.add(prop, string_value)
+        assert qualifier.property.data_type == "StringValue"
         assert str(qualifier.value) == str(string_value)
 
     # Item
@@ -23,6 +24,7 @@ class TestQualifier:
     def test_item(self, py_wb, claim, prop_item):
         item_2 = py_wb.Item().create("Item 2")
         qualifier = claim.qualifiers.add(prop_item, item_2)
+        assert qualifier.property.data_type == "Item"
         assert qualifier.value.entity_id == item_2.entity_id
 
     # ExternalId
@@ -30,6 +32,7 @@ class TestQualifier:
     def test_external_id(self, py_wb, claim, prop_external_id):
         external_id = py_wb.ExternalId().create("ID123")
         qualifier = claim.qualifiers.add(prop_external_id, external_id)
+        assert qualifier.property.data_type == "ExternalId"
         assert qualifier.value.marshal() == external_id.marshal()
 
     # GeoLocation
@@ -42,6 +45,7 @@ class TestQualifier:
             globe="http://www.wikidata.org/entity/Q2"
         )
         qualifier = claim.qualifiers.add(prop_geo_location, geo_location)
+        assert qualifier.property.data_type == "GeoLocation"
         assert qualifier.value.marshal() == geo_location.marshal()
 
     # Quantity
@@ -50,6 +54,7 @@ class TestQualifier:
         amount = 123
         quantity = py_wb.Quantity().create(amount)
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
+        assert qualifier.property.data_type == "Quantity"
         assert qualifier.value.amount == amount
         assert qualifier.value.marshal() == quantity.marshal()
 
@@ -57,6 +62,7 @@ class TestQualifier:
         amount = -5
         quantity = py_wb.Quantity().create(amount)
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
+        assert qualifier.property.data_type == "Quantity"
         assert qualifier.value.amount == amount
         assert qualifier.value.marshal() == quantity.marshal()
 
@@ -64,5 +70,6 @@ class TestQualifier:
         amount = 0.5
         quantity = py_wb.Quantity().create(amount, unit=item_unit)
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
+        assert qualifier.property.data_type == "Quantity"
         assert qualifier.value.amount == amount
         assert qualifier.value.marshal() == quantity.marshal()

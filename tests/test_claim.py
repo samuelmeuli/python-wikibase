@@ -16,6 +16,7 @@ class TestClaim:
 
     def test_string(self, item, prop, string_value):
         claim = item.claims.add(prop, string_value)
+        assert claim.property.data_type == "StringValue"
         assert str(claim.value) == str(string_value)
 
     # Item
@@ -23,6 +24,7 @@ class TestClaim:
     def test_item(self, py_wb, item, prop_item):
         item_2 = py_wb.Item().create("Item 2")
         claim = item.claims.add(prop_item, item_2)
+        assert claim.property.data_type == "Item"
         assert claim.value.entity_id == item_2.entity_id
 
     # ExternalId
@@ -30,6 +32,7 @@ class TestClaim:
     def test_external_id(self, py_wb, item, prop_external_id):
         external_id = py_wb.ExternalId().create("ID123")
         claim = item.claims.add(prop_external_id, external_id)
+        assert claim.property.data_type == "ExternalId"
         assert claim.value.marshal() == external_id.marshal()
 
     # GeoLocation
@@ -42,6 +45,7 @@ class TestClaim:
             globe="http://www.wikidata.org/entity/Q2"
         )
         claim = item.claims.add(prop_geo_location, geo_location)
+        assert claim.property.data_type == "GeoLocation"
         assert claim.value.marshal() == geo_location.marshal()
 
     # Quantity
@@ -50,6 +54,7 @@ class TestClaim:
         amount = 123
         quantity = py_wb.Quantity().create(amount)
         claim = item.claims.add(prop_quantity, quantity)
+        assert claim.property.data_type == "Quantity"
         assert claim.value.amount == amount
         assert claim.value.marshal() == quantity.marshal()
 
@@ -57,6 +62,7 @@ class TestClaim:
         amount = -5
         quantity = py_wb.Quantity().create(amount)
         claim = item.claims.add(prop_quantity, quantity)
+        assert claim.property.data_type == "Quantity"
         assert claim.value.amount == amount
         assert claim.value.marshal() == quantity.marshal()
 
@@ -64,5 +70,6 @@ class TestClaim:
         amount = 0.5
         quantity = py_wb.Quantity().create(amount, unit=item_unit)
         claim = item.claims.add(prop_quantity, quantity)
+        assert claim.property.data_type == "Quantity"
         assert claim.value.amount == amount
         assert claim.value.marshal() == quantity.marshal()

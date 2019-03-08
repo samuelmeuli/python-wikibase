@@ -22,6 +22,7 @@ class TestReference:
 
     def test_string(self, claim, prop, string_value):
         reference = claim.references.add(prop, string_value)
+        assert reference.property.data_type == "StringValue"
         assert str(reference.value) == str(string_value)
 
     # Quantity
@@ -30,6 +31,7 @@ class TestReference:
         amount = 123
         quantity = py_wb.Quantity().create(amount)
         reference = claim.references.add(prop_quantity, quantity)
+        assert reference.property.data_type == "Quantity"
         assert reference.value.amount == amount
         assert reference.value.marshal() == quantity.marshal()
 
@@ -37,6 +39,7 @@ class TestReference:
         amount = -5
         quantity = py_wb.Quantity().create(amount)
         reference = claim.references.add(prop_quantity, quantity)
+        assert reference.property.data_type == "Quantity"
         assert reference.value.amount == amount
         assert reference.value.marshal() == quantity.marshal()
 
@@ -44,5 +47,6 @@ class TestReference:
         amount = 0.5
         quantity = py_wb.Quantity().create(amount, unit=item_unit)
         reference = claim.references.add(prop_quantity, quantity)
+        assert reference.property.data_type == "Quantity"
         assert reference.value.amount == amount
         assert reference.value.marshal() == quantity.marshal()
