@@ -17,7 +17,7 @@ class TestClaim:
     def test_string(self, item, prop, string_value):
         claim = item.claims.add(prop, string_value)
         assert claim.property.data_type == "StringValue"
-        assert str(claim.value) == str(string_value)
+        assert str(claim.value) == string_value.value
 
     # Item
 
@@ -33,6 +33,8 @@ class TestClaim:
         external_id = py_wb.ExternalId().create("ID123")
         claim = item.claims.add(prop_external_id, external_id)
         assert claim.property.data_type == "ExternalId"
+        assert claim.value.external_id == external_id.external_id
+        assert str(claim.value) == external_id.external_id
         assert claim.value.marshal() == external_id.marshal()
 
     # GeoLocation
@@ -56,6 +58,7 @@ class TestClaim:
         claim = item.claims.add(prop_quantity, quantity)
         assert claim.property.data_type == "Quantity"
         assert claim.value.amount == amount
+        assert int(claim.value) == amount
         assert claim.value.marshal() == quantity.marshal()
 
     def test_quantity_without_unit_neg(self, py_wb, item, prop_quantity):
@@ -64,6 +67,7 @@ class TestClaim:
         claim = item.claims.add(prop_quantity, quantity)
         assert claim.property.data_type == "Quantity"
         assert claim.value.amount == amount
+        assert int(claim.value) == amount
         assert claim.value.marshal() == quantity.marshal()
 
     def test_quantity_with_unit(self, py_wb, item, prop_quantity, item_unit):
@@ -72,4 +76,5 @@ class TestClaim:
         claim = item.claims.add(prop_quantity, quantity)
         assert claim.property.data_type == "Quantity"
         assert claim.value.amount == amount
+        assert float(claim.value) == amount
         assert claim.value.marshal() == quantity.marshal()

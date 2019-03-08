@@ -23,7 +23,7 @@ class TestReference:
     def test_string(self, claim, prop, string_value):
         reference = claim.references.add(prop, string_value)
         assert reference.property.data_type == "StringValue"
-        assert str(reference.value) == str(string_value)
+        assert str(reference.value) == string_value.value
 
     # Quantity
 
@@ -33,6 +33,7 @@ class TestReference:
         reference = claim.references.add(prop_quantity, quantity)
         assert reference.property.data_type == "Quantity"
         assert reference.value.amount == amount
+        assert int(reference.value) == amount
         assert reference.value.marshal() == quantity.marshal()
 
     def test_quantity_without_unit_neg(self, py_wb, claim, prop_quantity):
@@ -41,6 +42,7 @@ class TestReference:
         reference = claim.references.add(prop_quantity, quantity)
         assert reference.property.data_type == "Quantity"
         assert reference.value.amount == amount
+        assert int(reference.value) == amount
         assert reference.value.marshal() == quantity.marshal()
 
     def test_quantity_with_unit(self, py_wb, claim, prop_quantity, item_unit):
@@ -49,4 +51,5 @@ class TestReference:
         reference = claim.references.add(prop_quantity, quantity)
         assert reference.property.data_type == "Quantity"
         assert reference.value.amount == amount
+        assert float(reference.value) == amount
         assert reference.value.marshal() == quantity.marshal()

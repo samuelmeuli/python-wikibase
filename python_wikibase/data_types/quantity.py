@@ -17,6 +17,12 @@ class Quantity(DataType):
         self.amount = None
         self.unit = None
 
+    def __int__(self):
+        return int(self.amount)
+
+    def __float__(self):
+        return float(self.amount)
+
     def unmarshal(self, data_value):
         quantity_value = data_value["value"]
 

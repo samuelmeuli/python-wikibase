@@ -17,7 +17,7 @@ class TestQualifier:
     def test_string(self, claim, prop, string_value):
         qualifier = claim.qualifiers.add(prop, string_value)
         assert qualifier.property.data_type == "StringValue"
-        assert str(qualifier.value) == str(string_value)
+        assert str(qualifier.value) == string_value.value
 
     # Item
 
@@ -33,6 +33,8 @@ class TestQualifier:
         external_id = py_wb.ExternalId().create("ID123")
         qualifier = claim.qualifiers.add(prop_external_id, external_id)
         assert qualifier.property.data_type == "ExternalId"
+        assert qualifier.value.external_id == external_id.external_id
+        assert str(qualifier.value) == external_id.external_id
         assert qualifier.value.marshal() == external_id.marshal()
 
     # GeoLocation
@@ -56,6 +58,7 @@ class TestQualifier:
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
         assert qualifier.property.data_type == "Quantity"
         assert qualifier.value.amount == amount
+        assert int(qualifier.value) == amount
         assert qualifier.value.marshal() == quantity.marshal()
 
     def test_quantity_without_unit_neg(self, py_wb, claim, prop_quantity):
@@ -64,6 +67,7 @@ class TestQualifier:
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
         assert qualifier.property.data_type == "Quantity"
         assert qualifier.value.amount == amount
+        assert int(qualifier.value) == amount
         assert qualifier.value.marshal() == quantity.marshal()
 
     def test_quantity_with_unit(self, py_wb, claim, prop_quantity, item_unit):
@@ -72,4 +76,5 @@ class TestQualifier:
         qualifier = claim.qualifiers.add(prop_quantity, quantity)
         assert qualifier.property.data_type == "Quantity"
         assert qualifier.value.amount == amount
+        assert float(qualifier.value) == amount
         assert qualifier.value.marshal() == quantity.marshal()
