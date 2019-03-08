@@ -12,6 +12,12 @@ class Claims(Base):
         self.item_id = None
         self.claims = {}
 
+    def __iter__(self):
+        return iter(self.to_list())
+
+    def __len__(self):
+        return len(self.to_list())
+
     def _add_locally(self, claim):
         """Save a newly created claim in the local collection
 
@@ -164,9 +170,6 @@ class Claim(Base):
         self.references = None
         self.snak_type = None
         self.value = None
-
-    def __eq__(self, other):
-        return self.claim_id == other.claim_id
 
     def unmarshal(self, item_id, claim_data):
         """Parse API response and fill object with the provided information

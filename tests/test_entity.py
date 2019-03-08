@@ -7,23 +7,31 @@ class TestEntity:
         item_fetched = py_wb.Item().get(entity_id=item.entity_id)
         assert item_fetched.entity_id == item.entity_id
         assert item_fetched.label.get(LANGUAGE) == ITEM_LABEL
+        assert str(item_fetched.label) == ITEM_LABEL
 
         # Update item label
         item_fetched.label.set(ITEM_LABEL_2)
         assert item_fetched.label.get(LANGUAGE) == ITEM_LABEL_2
+        assert str(item_fetched.label) == ITEM_LABEL_2
 
         # Update item description
         item_fetched.description.set(ITEM_DESC)
         assert item_fetched.description.get() == ITEM_DESC
+        assert str(item_fetched.description) == ITEM_DESC
 
         # Update item aliases
         item_fetched.aliases.add(ITEM_ALIAS)
         assert ITEM_ALIAS in item_fetched.aliases.get()
+        assert list(item_fetched.aliases) == item_fetched.aliases.get()
+        assert len(item_fetched.aliases) == len(item_fetched.aliases.get())
         item_fetched.aliases.remove(ITEM_ALIAS)
         assert ITEM_ALIAS not in item_fetched.aliases.get()
+        assert list(item_fetched.aliases) == item_fetched.aliases.get()
+        assert len(item_fetched.aliases) == len(item_fetched.aliases.get())
 
     def test_property(self, py_wb, prop):
         # Get property
         prop_fetched = py_wb.Property().get(entity_id=prop.entity_id)
         assert prop_fetched.entity_id == prop.entity_id
         assert prop_fetched.label.get(LANGUAGE) == PROP_LABEL
+        assert str(prop_fetched.label) == PROP_LABEL

@@ -12,6 +12,9 @@ class Label(Base):
         self.item_id = None
         self.labels = {}
 
+    def __str__(self):
+        return self.get()
+
     def unmarshal(self, item_id, labels):
         self.item_id = item_id
         for lang, lang_value in labels.items():

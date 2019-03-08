@@ -12,6 +12,12 @@ class Qualifiers(Base):
         self.claim_id = None
         self.qualifiers = {}
 
+    def __iter__(self):
+        return iter(self.to_list())
+
+    def __len__(self):
+        return len(self.to_list())
+
     def _add_locally(self, qualifier):
         """Save a newly created qualifier in the local collection
 
@@ -166,9 +172,6 @@ class Qualifier(Base):
         self.property = None
         self.snak_type = None
         self.value = None
-
-    def __eq__(self, other):
-        return self.qualifier_id == other.qualifier_id
 
     def unmarshal(self, claim_id, qualifier_data):
         """Parse API response and fill object with the provided information

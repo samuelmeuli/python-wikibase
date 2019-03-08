@@ -12,6 +12,9 @@ class Description(Base):
         self.descriptions = {}
         self.item_id = None
 
+    def __str__(self):
+        return self.get()
+
     def unmarshal(self, item_id, descriptions):
         self.item_id = item_id
         for lang, lang_value in descriptions.items():

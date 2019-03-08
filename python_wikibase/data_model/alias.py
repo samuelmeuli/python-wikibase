@@ -10,6 +10,12 @@ class Aliases(Base):
         self.aliases = {}
         self.item_id = None
 
+    def __iter__(self):
+        return iter(self.get())
+
+    def __len__(self):
+        return len(self.get())
+
     def unmarshal(self, item_id, aliases):
         self.item_id = item_id
         for lang, alias_list in aliases.items():
