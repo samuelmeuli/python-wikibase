@@ -12,6 +12,9 @@ class Qualifiers(Base):
         self.claim_id = None
         self.qualifiers = {}
 
+    def __getitem__(self, index):
+        return self.to_list()[index]
+
     def __iter__(self):
         return iter(self.to_list())
 

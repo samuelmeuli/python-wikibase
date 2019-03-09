@@ -10,6 +10,9 @@ class Aliases(Base):
         self.aliases = {}
         self.item_id = None
 
+    def __getitem__(self, index):
+        return self.get()[index]
+
     def __iter__(self):
         return iter(self.get())
 
