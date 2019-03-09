@@ -41,10 +41,7 @@ class TestQualifier:
 
     def test_geo_location(self, py_wb, claim, prop_geo_location):
         geo_location = py_wb.GeoLocation().create(
-            latitude=1.23,
-            longitude=1.23,
-            precision=0.1,
-            globe="http://www.wikidata.org/entity/Q2"
+            1.23, 4.56, precision=0.1, globe="http://www.wikidata.org/entity/Q2"
         )
         qualifier = claim.qualifiers.add(prop_geo_location, geo_location)
         assert qualifier.property.data_type == "GeoLocation"

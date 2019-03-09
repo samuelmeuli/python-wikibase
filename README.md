@@ -17,10 +17,7 @@ item = py_wb.Item().get(entity_id="item label")
 prop = py_wb.Property().get(entity_id="coordinate location")
 
 # Create new GeoLocation value
-value = py_wb.GeoLocation().create(
-    latitude=1.23,
-    longitude=4.56,
-)
+value = py_wb.GeoLocation().create(1.23, 4.56)
 
 # Create GeoLocation claim
 claim = item.claims.add(prop, value)
