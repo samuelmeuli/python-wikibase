@@ -41,6 +41,12 @@ value = py_wb.GeoLocation().create(1.23, 4.56)
 claim = item.claims.add(prop, value)
 ```
 
+Optional parameters:
+
+- `altitude` (`float`, default: `None`)
+- `precision` (`float`, default: `1 / 3600`)
+- `globe` (`Item`, default: `None`)
+
 ## Quantity
 
 Adding a `Quantity` claim to an item:
