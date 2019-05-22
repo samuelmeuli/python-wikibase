@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Wikibase queries and edits made easy"
 license = "Apache-2.0 and GPL-3.0"
 authors = ["Samuel Meuli <me@samuelmeuli.com>"]
+readme = "README.md"
 repository = "https://github.com/samuelmeuli/python-wikibase"
+documentation = "https://github.com/samuelmeuli/python-wikibase/blob/master/docs/usage.md"
 keywords = ["wikibase", "wikidata", "bot", "api", "wrapper"]
 classifiers = [
 	"Intended Audience :: Developers",
@@ -15,7 +17,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-wikibase-api = { git = "git@github.com:samuelmeuli/wikibase-api.git", tag = "v0.1.0" }
+wikibase-api = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "^18.3-alpha.0"
