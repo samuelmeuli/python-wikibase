@@ -31,7 +31,7 @@ value = py_wb.GeoLocation().create(1.23, 4.56)
 claim = item.claims.add(prop, value)
 ```
 
-**See the [documentation](./docs/usage) for descriptions and examples of all commands.**
+**See the [documentation](./docs/usage.md) for descriptions and examples of all commands.**
 
 ## Authentication
 
