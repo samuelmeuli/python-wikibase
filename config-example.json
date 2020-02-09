@@ -1,0 +1,15 @@
+{
+	"apiUrl": "http://localhost:8181/w/api.php",
+	"oauthCredentials": {
+		"consumerKey": "",
+		"consumerSecret": "",
+		"accessToken": "",
+		"accessSecret": ""
+	},
+	"loginCredentials": {
+		"botUsername": "",
+		"botPassword": ""
+	},
+	"isBot": false,
+	"summary": "Modified using python-wikibase"
+}
