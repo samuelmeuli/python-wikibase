@@ -33,7 +33,7 @@ combine_as_imports = true
 combine_star = true
 force_grid_wrap = 0
 include_trailing_comma = true
-indent = "    "
+indent = "    "  # TODO: Remove once https://github.com/timothycrosley/isort/issues/830 is fixed
 line_length = 100
 multi_line_output = 3
 
