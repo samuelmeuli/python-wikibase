@@ -39,12 +39,14 @@ The `PyWikibase` class takes the same authentication and configuration parameter
 
 ## Development
 
+### Contributing
+
+Suggestions and contributions are always welcome! Please discuss larger changes via issue before submitting a pull request.
+
 ### Setup
 
 See [this guide](https://wikibase-api.readthedocs.io/en/latest/development/development.html) on how to set up a development environment for this package.
 
-If you'd like to test this package with a local instance of Wikibase, see [this guide](https://wikibase-api.readthedocs.io/en/latest/guides/local_wikibase_instance.html) on how to set up a development instance with `wikibase-docker`.
+## Related
 
-### Contributing
-
-Suggestions and contributions are always welcome! Please first discuss changes via issue before submitting a pull request.
+- [`wikibase-api`](https://github.com/samuelmeuli/wikibase-api) – Wrapper library for the Wikibase API
